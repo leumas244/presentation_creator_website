@@ -25,7 +25,7 @@
                 </button>
                 <ul class="users-item-dropdown notification-dropdown dropdown">
                     {% for message in messages %}
-                    <li>
+                    <li id="{{ message }}">
                         <div class="notification-dropdown-element">
                             <div class="notification-dropdown-icon {{ message.tags }}">
                                 {% if message.tags == 'info' %}
@@ -42,7 +42,7 @@
                                 <span class="notification-dropdown__title">{{ message }}</span>
                             </div>
                             <div class="notification-dropdown-close">
-                                    <button type="button" class="transparent-btn">
+                                    <button type="button" class="transparent-btn" onclick='document.getElementById("{{ message }}").remove()'>
                                     <i data-feather="x" aria-hidden="true"></i>
                                     </button>
                             </div>
@@ -69,14 +69,8 @@
                 <ul class="users-item-dropdown nav-user-dropdown dropdown">
                     <li>
                         <a href="##">
-                            <i data-feather="user" aria-hidden="true"></i>
-                            <span>Profile</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="##">
                             <i data-feather="settings" aria-hidden="true"></i>
-                            <span>Account settings</span>
+                            <span>Einstellungen</span>
                         </a>
                     </li>
                     <li>
