@@ -2465,6 +2465,10 @@ label {
     color: #171717
 }
 
+.top-cat-subtitle {
+    margin-bottom: 10px
+}
+
 .top-cat-list__subtitle span,
 .top-cat-title p {
     font-weight: 500;
@@ -2860,7 +2864,6 @@ label {
 }
 
 .sign-up__subtitle {
-    max-width: 424px;
     font-weight: 500;
     font-size: 14px;
     line-height: 1.2;
@@ -2875,6 +2878,15 @@ label {
     width: 71px;
     height: 47px;
     border-radius: 6px
+}
+
+.password-check-icon .x-icon,
+.check-icon {
+    display: none
+}
+
+.password-check-icon .check-icon {
+    display: initial;
 }
 
 .darkmode {
@@ -3004,7 +3016,7 @@ label {
 }
 
 .darkmode .form {
-    background-color: #161624
+    background-color: #222235
 }
 
 .darkmode .form-label {
@@ -3012,12 +3024,13 @@ label {
 }
 
 .darkmode .form-input {
-    background-color: #222235;
+    background-color: #161624;
     color: #d6d7e3
 }
 
 .darkmode .sign-up__title,
-.darkmode .top-cat-title h3 {
+.darkmode .top-cat-title h3,
+.darkmode .top-cat-title h2 {
     color: #eff0f6
 }
 
