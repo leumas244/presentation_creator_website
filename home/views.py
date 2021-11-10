@@ -20,10 +20,6 @@ user_logged_in.connect(loginsuccessful)
 def home(request):
     if request.user.is_authenticated:
         dates = {}
-        messages.success(request, 'Erfolgsnachricht')
-        messages.info(request, 'Infonachricht')
-        messages.warning(request, 'Warningnachricht')
-        messages.error(request, 'Errornachricht')
         return render(request, 'sites/home.html', dates)
 
     else:

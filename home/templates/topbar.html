@@ -18,12 +18,11 @@
                 <i class="moon-icon" data-feather="moon" aria-hidden="true"></i>
             </button>
             <div class="notification-wrapper">
-                {% if messages %}
-                <button class="gray-circle-btn dropdown-btn" title="To messages" type="button">
+                <button id="notification_button" class="gray-circle-btn dropdown-btn" title="To messages" type="button">
                     <span class="sr-only">To messages</span>
-                    <span class="icon notification active" aria-hidden="true"></span>
+                    <span id="notification_icon" class="icon notification" aria-hidden="true"></span>
                 </button>
-                <ul class="users-item-dropdown notification-dropdown dropdown">
+                <ul id="notification_list" class="users-item-dropdown notification-dropdown dropdown">
                     {% for message in messages %}
                     <li id="{{ message }}">
                         <div class="notification-dropdown-element">
@@ -42,7 +41,7 @@
                                 <span class="notification-dropdown__title">{{ message }}</span>
                             </div>
                             <div class="notification-dropdown-close">
-                                    <button type="button" class="transparent-btn" onclick='document.getElementById("{{ message }}").remove()'>
+                                    <button type="button" class="transparent-btn" onclick='delete_notification("{{ message }}")'>
                                     <i data-feather="x" aria-hidden="true"></i>
                                     </button>
                             </div>
@@ -50,12 +49,6 @@
                     </li>
                     {% endfor %}
                 </ul>
-                {% else %}
-                <button class="gray-circle-btn btn" title="To messages" type="button">
-                    <span class="sr-only">To messages</span>
-                    <span class="icon notification" aria-hidden="true"></span>
-                </button>
-                {% endif %}
             </div>
             <div class="nav-user-wrapper">
                 <button class="nav-user-btn dropdown-btn" title="My profile" type="button">
@@ -90,3 +83,6 @@
         </div>
     </div>
 </nav>
+{% load static %}
+<!-- Notification Checker -->
+<script src="{% static 'base/js/topbar_notification_check.js' %}"></script>
