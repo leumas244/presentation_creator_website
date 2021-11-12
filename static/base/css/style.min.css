@@ -3030,7 +3030,8 @@ label {
 
 .darkmode .sign-up__title,
 .darkmode .top-cat-title h3,
-.darkmode .top-cat-title h2 {
+.darkmode .top-cat-title h2,
+.darkmode .top-cat-subtitle h4 {
     color: #eff0f6
 }
 
