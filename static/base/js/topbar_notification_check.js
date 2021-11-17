@@ -19,4 +19,10 @@ function emtpy_check() {
     }
 }
 
-emtpy_check();
+emtpy_check()
+if (document.querySelector(".notification-wrapper ul").innerHTML.trim() != "") {
+        let element = document.getElementById("notification_list");
+        let layer = document.querySelector('.layer');
+        element.classList.add("active");
+        layer.classList.add('active');
+};

@@ -1094,11 +1094,11 @@ button:focus {
 
 button.disabled {
     cursor: default;
-    color: #d6d7e3
+    background-color: #cccccc
 }
 
 button.disabled:hover {
-    color: #d6d7e3
+    background-color: #cccccc
 }
 
 button.disabled:focus {
@@ -2765,7 +2765,7 @@ label {
     font-size: 14px;
     line-height: 2.43;
     color: #171717;
-    cursor: pointer;
+    cursor: default;
     margin-bottom: 5px;
     width: -webkit-max-content;
     width: -moz-max-content;
@@ -2893,6 +2893,12 @@ label {
     background-color: #11111d
 }
 
+.darkmode button.disabled {
+    cursor: default;
+    background-color: #2e2e3a;
+    color: #d6d7e3;
+}
+
 .darkmode .main-nav--bg {
     background-color: #161624
 }
@@ -2938,13 +2944,13 @@ label {
 }
 
 .darkmode .dropdown {
-    background-color: #11111d;
+    background-color: #222235;
     -webkit-box-shadow: none;
     box-shadow: none
 }
 
 .darkmode .dropdown::before {
-    border-color: transparent transparent #11111d
+    border-color: transparent transparent #222235
 }
 
 .darkmode .dropdown a {

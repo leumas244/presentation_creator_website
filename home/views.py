@@ -25,6 +25,7 @@ user_logged_in.connect(loginsuccessful)
 def home(request):
     if request.user.is_authenticated:
         dates = {}
+        messages.success(request, 'Test')
         return render(request, 'sites/home.html', dates)
 
     else:
@@ -42,7 +43,7 @@ def password_change(request):
                 messages.success(request, 'Du hast dein Passwort erfolgreich geändert')
                 return redirect('home')
             else:
-                messages.error(request, str(my_message))
+                messages.error(request, str(my_message.group().replace('<ul class="errorlist"><li>', '').replace('</li>', '')))
                 return render(request, 'sites/change_password.html')
         else:
             return render(request, 'sites/change_password.html')
