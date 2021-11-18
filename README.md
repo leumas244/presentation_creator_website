@@ -1,35 +1,22 @@
-# Django Dashboard-Template
+# Stadtmission Präsentations-Erstellungs-Webseite
 
-## Was ist das Django Dashboard-Template?
+## Was ist das dieses Projekt?
 
-Dieses Projekt ist eine Vorlage für Django-Webseiten, welche hauptsächlich ein Dashboard nutzen. Die Vorlage hat diese
-fertigen Funktionen:
+Dieses Projekt ist eine Webseite zum automatischen Erstellen von SongBeamer Präsentationen für den Gottesdienst der
+Stadtmission Grünstadt. Dafür wird der Ablaufplan (Agenda) aus ChurchTools ausgewertet und zu einer Songbeamer-Datei
+umgewandelt.
 
-- Login- / Logout-Funktion
-- Lightmode / Darkmode
-- Benachrichtigungen in der Topbar
-- Einstellungsänderungen
-- Passwortänderungen
+Das Projekt ist Version 2.0
 
-## Anleitung zum Nutzen der Vorlage
+## Anleitung zum Nutzen des Projekts
+
 Ab hier gibt es ein kleines HandsOn wie das Projekt lokal initialisiert wird.
 
-### 1. Projekt umbenennen
+### 0. Genutze Bibliotheken
+- Django
+- 
 
-Das Projekt sollte nach dem Klonen direkt umbenannt werden. Dafür wird der Root-Ordner
-(der Ordner, der durch das Klonen erzeugt wurde) im Dateiexplorer umbenannt. Dann muss im Root-Ordner der Ordner
-"dashboard_template" über Refactor->Rename umbenannt werden. Am besten man nennt das Projekt so wie das Git-Repo
-
-### 2. Git remote Host ändern
-
-Nun sollte das Projekt auf ein anderes Repro gestellt werden. Dafür ein Repro erstellen und dann folgenden Befehle:
-
-```
-git remote set-url origin <MEIN_REPO_LINK>
-git remote -v
-```
-
-### 3. Datenbank initialisieren
+### 1. Datenbank initialisieren
 
 Als Erstes, muss die Datenbank initialisiert werden. Diese bleibt durch die gitignore IMMER lokal. Mit dem Befehl:
 
@@ -37,7 +24,7 @@ Als Erstes, muss die Datenbank initialisiert werden. Diese bleibt durch die giti
 python manage.py migrate
 ```
 
-### 4. Superuser erstellen
+### 2. Superuser erstellen
 
 Danach wird ein Admin-User gebraucht. Dieser wird mit nachfolgendem Befehl erstellt:
 
@@ -45,7 +32,7 @@ Danach wird ein Admin-User gebraucht. Dieser wird mit nachfolgendem Befehl erste
 python manage.py createsuperuser
 ```
 
-### 5. Server starten und betreiben
+### 3. Server starten und betreiben
 
 - Nun kann der Server gestartet werden.
 
