@@ -1,5 +1,6 @@
 import re
 
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -25,7 +26,6 @@ user_logged_in.connect(loginsuccessful)
 def home(request):
     if request.user.is_authenticated:
         dates = {}
-        messages.success(request, 'Test')
         return render(request, 'sites/home.html', dates)
 
     else:
@@ -43,10 +43,43 @@ def password_change(request):
                 messages.success(request, 'Du hast dein Passwort erfolgreich geändert')
                 return redirect('home')
             else:
-                messages.error(request, str(my_message.group().replace('<ul class="errorlist"><li>', '').replace('</li>', '')))
+                messages.error(request,
+                               str(my_message.group().replace('<ul class="errorlist"><li>', '').replace('</li>', '')))
                 return render(request, 'sites/change_password.html')
         else:
             return render(request, 'sites/change_password.html')
+
+    else:
+        return redirect('login')
+
+
+def settings(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            users = User.objects.get(first_name=request.user.first_name)
+            # Nachnamen aendern und Log eintrag dazu erstellen
+            try:
+                if request.POST.get('firstname') != '':
+                    users.first_name = request.POST.get('firstname')
+                    users.save()
+
+                if request.POST.get('lastname') != '':
+                    users.last_name = request.POST.get('lastname')
+                    users.save()
+
+                # Email aendern und Log eintrag dazu erstellen
+                if request.POST.get('email') != '':
+                    users.email = request.POST.get('email')
+                    users.save()
+
+                messages.success(request, 'Du hast erfolgreich deine Einstellungen geaendert!')
+            except:
+                messages.error(request, 'Deine Einstellungen konnten nicht geaendert werden!')
+
+            # Seite neuladen
+            return redirect('home')
+        else:
+            return render(request, 'sites/settings.html')
 
     else:
         return redirect('login')
