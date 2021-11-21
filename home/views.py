@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.contrib.auth import update_session_auth_hash
 
+from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events
+
 
 def logout(sender, user, request, **kwargs):
     ip = request.META.get('REMOTE_ADDR')
@@ -25,7 +27,9 @@ user_logged_in.connect(loginsuccessful)
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
-        dates = {}
+        events = get_list_of_events()
+        dates = {'events': events}
+
         return render(request, 'sites/home.html', dates)
 
     else:
