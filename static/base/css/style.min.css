@@ -1628,12 +1628,19 @@ label {
     margin-right: 20px
 }
 
-.users-table td {
+.users-table tbody {
     background-color: #fff;
+}
+
+.users-table td {
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     padding-top: 15px;
     padding-bottom: 15px
+}
+
+.users-table tbody tr:hover {
+    background-color: #d8e7ff;
 }
 
 .users-table td:first-child {
@@ -2889,6 +2896,11 @@ label {
     display: initial;
 }
 
+.active-presentation {
+    color: #99ff99;
+    font-weight: bold;
+}
+
 .darkmode {
     background-color: #11111d
 }
@@ -3004,9 +3016,16 @@ label {
     color: #eff0f6
 }
 
-.darkmode .users-table td {
+.darkmode .users-table tbody {
     background-color: #222235;
+}
+
+.darkmode .users-table td {
     border-color: transparent
+}
+
+.darkmode .users-table tbody tr:hover {
+    background-color: #2d3350
 }
 
 .darkmode .users-table tbody tr:last-child .users-item-dropdown::before {

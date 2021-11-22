@@ -3,7 +3,8 @@ import requests
 import datetime
 import pytz
 
-from .churchtools_settings import login_token_url, base_url, run_mode, test_data, serviceId_leitung, serviceId_predigt
+from .churchtools_settings import login_token_url, base_url, run_mode, test_data, serviceId_leitung, serviceId_predigt, \
+    serviceId_presentation
 
 
 def request_to_church_tools(url):
@@ -58,10 +59,10 @@ def get_agenda_state_by_event_id(event_id):
     if 'message' in response:
         agenda_state = 'not_found'
     else:
-        if response['data']['isFinal'] != True:
-            agenda_state = 'not_final'
-        else:
+        if response['data']['isFinal']:
             agenda_state = 'final'
+        else:
+            agenda_state = 'not_final'
     return agenda_state
 
 
@@ -73,6 +74,7 @@ def get_service_person_by_service_id_by_event_id(event_id, service_id):
             person = eventServices['name']
             if person is None:
                 person = ''
+            return person
     return person
 
 
@@ -97,6 +99,9 @@ def get_list_of_events():
 
                 service_predigt = get_service_person_by_service_id_by_event_id(event['id'], serviceId_predigt)
                 event_dic['service_predigt'] = service_predigt
+
+                service_presentation = get_service_person_by_service_id_by_event_id(event['id'], serviceId_presentation)
+                event_dic['service_presentation'] = service_presentation
 
                 event_list.append(event_dic)
 

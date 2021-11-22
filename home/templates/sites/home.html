@@ -28,6 +28,12 @@
                         Leitung: {{ event.service_leitung }}
                         <br>
                         Predigt: {{ event.service_predigt }}
+                        <br>
+                        {% if user.first_name in event.service_presentation %}
+                        Präsentation: <span class="active-presentation">{{ event.service_presentation }}</span>
+                        {% else %}
+                        Präsentation: {{ event.service_presentation }}
+                        {% endif %}
                     </td>
                     {% if event.agenda_state == 'final' %}
                     <td><span class="badge-success">finaler Ablauf</span></td>
@@ -51,45 +57,6 @@
                     </td>
                 </tr>
                 {% endfor %}
-                <tr>
-                    <td>
-                        <label class="users-table__checkbox">
-                            <input type="checkbox" class="check">
-                            <div class="categories-table-img">
-                                <picture>
-                                    <source srcset="{% static 'base/img/categories/03.webp' %}" type="image/webp">
-                                    <img src="{% static 'base/img/categories/03.jpg' %}" alt="category"></picture>
-                            </div>
-                        </label>
-                    </td>
-                    <td>
-                        Helping a local business reinvent itself
-                    </td>
-                    <td>
-                        <div class="pages-table-img">
-                            <picture>
-                                <source srcset="{% static 'base/img/avatar/avatar-face-02.webp' %}"
-                                        type="image/webp">
-                                <img src="{% static 'base/img/avatar/avatar-face-02.png' %}" alt="User Name">
-                            </picture>
-                            Kathryn Murphy
-                        </div>
-                    </td>
-                    <td><span class="badge-active">Active</span></td>
-                    <td>
-                                                <span class="p-relative">
-                        <button class="dropdown-btn transparent-btn" type="button" title="More info">
-                          <div class="sr-only">More info</div>
-                          <i data-feather="more-horizontal" aria-hidden="true"></i>
-                        </button>
-                        <ul class="users-item-dropdown dropdown">
-                          <li><a href="##">Edit</a></li>
-                          <li><a href="##">Quick edit</a></li>
-                          <li><a href="##">Trash</a></li>
-                        </ul>
-                      </span>
-                    </td>
-                </tr>
                 </tbody>
             </table>
         </div>
