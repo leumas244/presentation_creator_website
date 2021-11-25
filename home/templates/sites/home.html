@@ -2,47 +2,55 @@
 {% load static %}
 
 {% block head %}
-<title>Gottesdienste</title>
+    <title>Gottesdienste</title>
 {% endblock %}
 
 {% block main %}
-<div class="row">
-    <div class="col-lg-9">
-        <div class="users-table table-wrapper">
-            <table class="posts-table">
-                <thead>
-                <tr class="users-table-info">
-                    <th>&#160 Datum</th>
-                    <th>Titel</th>
-                    <th>Personen</th>
-                    <th>Status</th>
-                    <th>Aktion</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for event in events %}
-                <tr>
-                    <td>{{ event.date }} Uhr</td>
-                    <td>{{ event.name }}</td>
-                    <td>
-                        Leitung: {{ event.service_leitung }}
-                        <br>
-                        Predigt: {{ event.service_predigt }}
-                        <br>
-                        {% if user.first_name in event.service_presentation %}
-                        Präsentation: <span class="active-presentation">{{ event.service_presentation }}</span>
-                        {% else %}
-                        Präsentation: {{ event.service_presentation }}
-                        {% endif %}
-                    </td>
-                    {% if event.agenda_state == 'final' %}
-                    <td><span class="badge-success">finaler Ablauf</span></td>
-                    {% elif event.agenda_state == 'not_final' %}
-                    <td><span class="badge-active">aktiver Ablauf</span></td>
-                    {% else %}
-                    <td><span class="badge-trashed">kein Ablauf</span></td>
-                    {% endif %}
-                    <td>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="users-table table-wrapper">
+                <table class="posts-table">
+                    <thead>
+                    <tr class="users-table-info">
+                        <th>&#160 Datum</th>
+                        <th>Titel</th>
+                        <th>Personen</th>
+                        <th>Status</th>
+                        <th>Aktion</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td><strong>{{ event.date }} Uhr</strong></td>
+                            <td>{{ event.name }}</td>
+                            <td>
+                                Leitung: {{ event.service_leitung }}
+                                <br>
+                                Predigt: {{ event.service_predigt }}
+                                <br>
+                                {% if user.first_name in event.service_presentation %}
+                                    Präsentation:
+                                    <span class="active-presentation">{{ event.service_presentation }}</span>
+                                {% else %}
+                                    Präsentation: {{ event.service_presentation }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if event.agenda_state == 'final' %}
+                                    <span class="badge-success">finaler Ablauf</span>
+                                    Letzte Änderung: {{ event.last_change_date }}
+                                    <br>Von: {{ event.last_change_person }}
+                                {% elif event.agenda_state == 'not_final' %}
+                                    <span class="badge-active">aktiver Ablauf</span>
+                                    Letzte Änderung: {{ event.last_change_date }}
+                                    <br>Von: {{ event.last_change_person }}
+                                {% else %}
+                                    <span class="badge-trashed">kein Ablauf</span>
+                                {% endif %}
+
+                            </td>
+                            <td>
                                                 <span class="p-relative">
                         <button class="dropdown-btn transparent-btn" type="button" title="More info">
                           <div class="sr-only">More info</div>
@@ -54,102 +62,102 @@
                           <li><a href="##">Trash</a></li>
                         </ul>
                       </span>
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <article class="white-block">
+                <div class="top-cat-title">
+                    <h3>Top categories</h3>
+                    <p>28 Categories, 1400 Posts</p>
+                </div>
+                <ul class="top-cat-list">
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                Lifestyle <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                Dailiy lifestyle articles <span class="purple">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                Tutorials <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                Coding tutorials <span class="blue">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                Technology <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                Dailiy technology articles <span class="danger">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                UX design <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                UX design tips <span class="success">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                Interaction tips <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                Interaction articles <span class="warning">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                App development <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                Mobile development articles <span class="warning">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                Nature <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                Wildlife animal articles <span class="warning">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="##">
+                            <div class="top-cat-list__title">
+                                Geography <span>8.2k</span>
+                            </div>
+                            <div class="top-cat-list__subtitle">
+                                Geography articles <span class="primary">+472</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </article>
         </div>
     </div>
-    <div class="col-lg-3">
-        <article class="white-block">
-            <div class="top-cat-title">
-                <h3>Top categories</h3>
-                <p>28 Categories, 1400 Posts</p>
-            </div>
-            <ul class="top-cat-list">
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            Lifestyle <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            Dailiy lifestyle articles <span class="purple">+472</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            Tutorials <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            Coding tutorials <span class="blue">+472</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            Technology <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            Dailiy technology articles <span class="danger">+472</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            UX design <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            UX design tips <span class="success">+472</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            Interaction tips <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            Interaction articles <span class="warning">+472</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            App development <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            Mobile development articles <span class="warning">+472</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            Nature <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            Wildlife animal articles <span class="warning">+472</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="##">
-                        <div class="top-cat-list__title">
-                            Geography <span>8.2k</span>
-                        </div>
-                        <div class="top-cat-list__subtitle">
-                            Geography articles <span class="primary">+472</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </article>
-    </div>
-</div>
 {% endblock %}
