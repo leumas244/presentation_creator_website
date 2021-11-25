@@ -2,3 +2,5 @@
 
 /db.sqlite3
 *.pyc
+/home/churchtools_connection_package/data/
+*.sng

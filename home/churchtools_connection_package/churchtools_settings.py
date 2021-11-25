@@ -53,8 +53,8 @@ login_token = ''
 
 login_token_url = "?login_token=" + str(login_token)
 
-calenders = ['./agenda_conv_website/ChurchTools_conv_package/data/daskirchenjahr_2019-2020.ics',
-             './agenda_conv_website/ChurchTools_conv_package/data/daskirchenjahr_2020-2021.ics',
-             './agenda_conv_website/ChurchTools_conv_package/data/daskirchenjahr_2021-2022.ics',
-             './agenda_conv_website/ChurchTools_conv_package/data/daskirchenjahr_2022-2023.ics'
+calenders = ['./home/churchtools_connection_package/data/daskirchenjahr_2019-2020.ics',
+             './home/churchtools_connection_package/data/daskirchenjahr_2020-2021.ics',
+             './home/churchtools_connection_package/data/daskirchenjahr_2021-2022.ics',
+             './home/churchtools_connection_package/data/daskirchenjahr_2022-2023.ics'
              ]
