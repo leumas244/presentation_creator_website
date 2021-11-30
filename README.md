@@ -14,7 +14,8 @@ Ab hier gibt es ein kleines HandsOn wie das Projekt lokal initialisiert wird.
 
 ### 0. Genutze Bibliotheken
 - Django
-- 
+- datetime
+- bs4
 
 ### 1. Datenbank initialisieren
 

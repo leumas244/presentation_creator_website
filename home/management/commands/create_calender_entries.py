@@ -1,29 +1,34 @@
 from datetime import datetime
-import jicson
+from bs4 import BeautifulSoup
+
 from django.core.management.base import BaseCommand
-from home.models import *
+from home.models import WeekMotto
 
 
 class Command(BaseCommand):
     help = 'Create automaticly calender entries with bible passages'
 
     def handle(self, *args, **options):
-        result = jicson.fromFile('home/churchtools_connection_package/data/daskirchenjahr_2019-2020.ics')
+        source_file = open('home/churchtools_connection_package/data/jahr_2021-2022.html')
+        soup = BeautifulSoup(source_file, features="html.parser")
+        source_file.close()
 
-        godilist = []
+        rows = soup.findAll('tr')
 
-        for item in result['VCALENDAR'][0]['VEVENT']:
-            start_date = datetime.strptime(item['DTSTART;VALUE=DATE'], '%Y%m%d')
-            end_date = datetime.strptime(item['DTEND;VALUE=DATE'], '%Y%m%d')
-            desc = item['DESCRIPTION']
-            desc_split = desc.split('\\n')
-            spruch = 'no spruch found'
-            for piece in desc_split:
-                if 'Spruch:' in piece:
-                    spruch = piece.replace('Spruch: ', '')
+        for row in rows[1:]:
+            fields = row('td')
 
-            godi = [item['SUMMARY'], start_date, end_date, spruch]
-            godilist.append(godi)
+            title = fields[0].contents[0]
+            date = datetime.strptime(fields[1].contents[0][0:10], '%d.%m.%Y')
+            gospels = fields[2].contents[0]
+            epistle = fields[3].contents[0]
+            old_testament = fields[4].contents[0]
+            lecture = fields[5].contents[0]
+            motto_short = fields[6].contents[0]
+            motto_long = ''
+            motto_api = ''
 
-        for god in godilist:
-            print(god)
+            week_motto = WeekMotto(title=title, date=date, gospels=gospels, epistle=epistle,
+                                   old_testament=old_testament, lecture=lecture, motto_short=motto_short,
+                                   motto_long=motto_long, motto_api=motto_api)
+            week_motto.save()
