@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from bs4 import BeautifulSoup
 
 from django.core.management.base import BaseCommand
@@ -14,12 +14,13 @@ class Command(BaseCommand):
         source_file.close()
 
         rows = soup.findAll('tr')
-
+        row_count = len(rows[1:])
         for row in rows[1:]:
             fields = row('td')
 
             title = fields[0].contents[0]
-            date = datetime.strptime(fields[1].contents[0][0:10], '%d.%m.%Y')
+            year, month, day = self.get_date(fields[1].contents[0])
+            date = datetime.date(year, month, day)
             gospels = fields[2].contents[0]
             epistle = fields[3].contents[0]
             old_testament = fields[4].contents[0]
@@ -32,3 +33,16 @@ class Command(BaseCommand):
                                    old_testament=old_testament, lecture=lecture, motto_short=motto_short,
                                    motto_long=motto_long, motto_api=motto_api)
             week_motto.save()
+
+            counter = rows.index(row)
+            percent = round((counter/row_count)*100, 1)
+            print('[' + str(percent) + '%]  ' + title)
+
+    def get_date(self, date_field):
+        date_helper_list = date_field.split('(')
+        date_helper = date_helper_list[0].replace(' ', '')
+        date_list = date_helper.split('.')
+        year = int(date_list[2])
+        month = int(date_list[1])
+        day = int(date_list[0])
+        return year, month, day
