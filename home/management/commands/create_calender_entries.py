@@ -6,7 +6,7 @@ from home.models import WeekMotto
 
 
 class Command(BaseCommand):
-    help = 'Create automaticly calender entries with bible passages'
+    help = 'Create automatically calender entries with bible passages'
 
     def handle(self, *args, **options):
         source_file = open('home/churchtools_connection_package/data/jahr_2021-2022.html')

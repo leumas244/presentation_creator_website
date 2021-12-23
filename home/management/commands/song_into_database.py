@@ -9,6 +9,13 @@ class Command(BaseCommand):
     help = 'Save automatically Songs from .sng files to Database'
 
     def handle(self, *args, **options):
+        used_keywords = ['title', 'copyrights', 'addCopyrightInfo', 'author', 'bible', 'CCLI', 'categories',
+                         'churchSongID',
+                         'comment', 'editor', 'format', 'key', 'keywords', 'lang', 'langCount', 'melody',
+                         'natCopyright',
+                         'oTitle', 'quickFind', 'rights', 'songbook', 'speed', 'titleFormat', 'titleLang2',
+                         'titleLang3',
+                         'titleLang4', 'translation', 'verseOrder', 'version']
         path_folder = 'C:/Users/D0290928/Desktop/songs'
         tracked_songs = Song.objects.all()
         song_file_path_tree = self.get_all_paths(path_folder)
@@ -35,13 +42,13 @@ class Command(BaseCommand):
                     print('        Song "' + song_file_path + '" has no update')
                     continue
                 else:
-                    id_number = self.update_song(song_file_path, current_database_song, path_folder)
+                    id_number = self.update_song(song_file_path, current_database_song, path_folder, used_keywords)
                     if not id_number:
                         print('FAILURE - Updating database_file')
                         return
                     print('        Song "' + song_file_path + '" updated with id: ' + str(id_number))
             else:
-                id_number = self.track_new_song_file(song_file_path, path_folder)
+                id_number = self.track_new_song_file(song_file_path, path_folder, used_keywords)
                 if not id_number:
                     print('FAILURE - Creating database_file')
                     return
@@ -49,10 +56,15 @@ class Command(BaseCommand):
         print('        ENDING - Viewing every single song-file')
         print('        STARTING - Deleting old database entries with no file')
         for song_file_path in list_of_tracked_songs:
-            delete_song = Song.objects.get(filePath=song_file_path)
-            id_number = delete_song.id
-            delete_song.delete()
-            print('        Song "' + song_file_path + '" deleted with id: ' + str(id_number))
+            print('[' + str((round(
+                ((list_of_tracked_songs.index(song_file_path) + 1) / len(list_of_tracked_songs)) * 100, 1))) + '%]')
+            try:
+                delete_song = Song.objects.get(filePath=song_file_path)
+                id_number = delete_song.id
+                delete_song.delete()
+                print('        Song "' + song_file_path + '" deleted with id: ' + str(id_number))
+            except Exception as e:
+                print('FAILURE - Deleting database_file. Exception: ' + str(e))
         print('        ENDING - Deleting old database entries with no file')
         return
 
@@ -112,14 +124,16 @@ class Command(BaseCommand):
             list_of_tracked_songs.append(song.filePath)
         return list_of_tracked_songs
 
-    def update_song(self, song_file_path, current_database_song, path_folder):
+    def update_song(self, song_file_path, current_database_song, path_folder, used_keywords):
         complete_file_path = path_folder + '/' + song_file_path
         try:
             keywords, content = self.get_dictionary_of_keywords(complete_file_path)
             md5_hash = self.get_md5_hash(complete_file_path)
 
             for keyword in keywords:
-                setattr(current_database_song, keyword, keywords[keyword])
+                if keyword in used_keywords:
+                    setattr(current_database_song, keyword, keywords[keyword])
+
             current_database_song.file_md5_hash = md5_hash
             current_database_song.content = content
             current_database_song.save()
@@ -131,7 +145,7 @@ class Command(BaseCommand):
 
         return id_number
 
-    def track_new_song_file(self, file_path, path_folder):
+    def track_new_song_file(self, file_path, path_folder, used_keywords):
         complete_file_path = path_folder + '/' + file_path
         try:
             keywords, content = self.get_dictionary_of_keywords(complete_file_path)
@@ -144,7 +158,8 @@ class Command(BaseCommand):
             new_song = Song(title=title, filePath=file_path, content=content, file_md5_hash=md5_hash)
 
             for keyword in keywords:
-                setattr(new_song, keyword, keywords[keyword])
+                if keyword in used_keywords:
+                    setattr(new_song, keyword, keywords[keyword])
             new_song.save()
             id_number = new_song.id
 
@@ -168,8 +183,17 @@ class Command(BaseCommand):
                     line = line.replace('#', '')
                     line_split = line.split('=')
                     keyword = line_split[0]
-                    keyword = keyword[0].lower() + keyword[1:]
                     value = line_split[1]
+                    if keyword == '(c)':
+                        keyword = 'copyrights'
+                    elif keyword == 'CCLI':
+                        keyword = 'CCLI'
+                        try:
+                            int(value)
+                        except ValueError:
+                            continue
+                    else:
+                        keyword = keyword[0].lower() + keyword[1:]
                     dictionary_of_keywords[keyword] = value
 
         return dictionary_of_keywords, file_content
