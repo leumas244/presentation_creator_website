@@ -68,3 +68,21 @@ class Song(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Agenda(models.Model):
+    id = models.AutoField(primary_key=True)
+    church_tools_id = models.IntegerField('ChurchTools ID', unique=True, blank=False, null=False)
+    title = models.CharField('Titel', blank=True, max_length=100)
+    date = models.DateTimeField('Datum', blank=False)
+    agenda_state = models.BooleanField('Agenda-Status')
+    content = models.TextField('Inhalt', blank=False, null=False)
+
+    update_date = models.DateTimeField('Geändert', auto_now=True)
+    creation_date = models.DateTimeField('Erstellt', auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Agendas"
+
+    def __str__(self):
+        return self.title + str(self.date)

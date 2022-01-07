@@ -1,5 +1,5 @@
 # mode can be production/testing. In testing mode the test_data have to be filled
-run_mode = 'testing'
+run_mode = 'production'
 test_data = [{'id': 466, 'name': 'Gottesdienst', 'date': '24.12.2021  16:00', 'agenda_state': 'final',
               'last_change_person': 'Christine Fasol', 'last_change_date': '19.12.2021  20:28',
               'service_leitung': 'Team Familiengottesdienst', 'service_predigt': 'Marion Bietz',
@@ -50,9 +50,9 @@ serviceId_predigt = 1
 serviceId_leitung = 3
 serviceId_presentation = 7
 
-base_url = ''
+base_url = 'https://stamigruenstadt.church.tools/api/'
 
-login_token = ''
+login_token = 'BWZvOMVP8tZeFA5IrfIvKkmazRrWVlHazL80H9XOazrxBhfctpONbFYKawRiHIPcs5BSHmlAwoARkrrKZR0iVjqgk46jtDnHQLBETZgRWu0PaTf7N7ToYqL7yYUXTfrCo9W7ESQleEoO4MXuOcQ3LWL95qDbS9OmykA4jGyEBhMKDNH9sTBN9VLmTLi5uJBBrAmaqLT6kScVEvzCS8NYL8MTkxSPtm8Ve6G95osEq7aJmy3CgnGxdSJDWSiFicsv'
 
 login_token_url = "?login_token=" + str(login_token)
 
