@@ -16,7 +16,7 @@ class Command(BaseCommand):
                          'oTitle', 'quickFind', 'rights', 'songbook', 'speed', 'titleFormat', 'titleLang2',
                          'titleLang3',
                          'titleLang4', 'translation', 'verseOrder', 'version']
-        path_folder = 'C:/Users/D0290928/Desktop/songs'
+        path_folder = 'D:/Dropbox/Songs'
         tracked_songs = Song.objects.all()
         song_file_path_tree = self.get_all_paths(path_folder)
         if not song_file_path_tree:
@@ -77,7 +77,7 @@ class Command(BaseCommand):
                 sng_files = []
 
                 for file in files:
-                    if '.sng' in file:
+                    if '.sng' == file[-4:]:
                         sng_files.append(file)
 
                 file_counter = file_counter + len(sng_files)

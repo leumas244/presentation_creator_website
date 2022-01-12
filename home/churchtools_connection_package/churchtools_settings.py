@@ -1,5 +1,5 @@
 # mode can be production/testing. In testing mode the test_data have to be filled
-run_mode = 'production'
+run_mode = 'testing'
 test_data = [{'id': 466, 'name': 'Gottesdienst', 'date': '24.12.2021  16:00', 'agenda_state': 'final',
               'last_change_person': 'Christine Fasol', 'last_change_date': '19.12.2021  20:28',
               'service_leitung': 'Team Familiengottesdienst', 'service_predigt': 'Marion Bietz',
