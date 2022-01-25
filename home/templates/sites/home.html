@@ -51,17 +51,9 @@
 
                             </td>
                             <td>
-                                                <span class="p-relative">
-                        <button class="dropdown-btn transparent-btn" type="button" title="More info">
-                          <div class="sr-only">More info</div>
-                          <i data-feather="more-horizontal" aria-hidden="true"></i>
-                        </button>
-                        <ul class="users-item-dropdown dropdown">
-                          <li><a href="##">Edit</a></li>
-                          <li><a href="##">Quick edit</a></li>
-                          <li><a href="##">Trash</a></li>
-                        </ul>
-                      </span>
+                                {% if event.agenda_state == 'final' or event.agenda_state == 'not_final' %}
+                                <a href="{% url 'agenda_by_identifier' event.id %}">Ansehen</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -161,3 +153,16 @@
         </div>
     </div>
 {% endblock %}
+<!--
+<span class="p-relative">
+                        <button class="dropdown-btn transparent-btn" type="button" title="More info">
+                          <div class="sr-only">More info</div>
+                          <i data-feather="more-horizontal" aria-hidden="true"></i>
+                        </button>
+                        <ul class="users-item-dropdown dropdown">
+                          <li><a href="##">Edit</a></li>
+                          <li><a href="##">Quick edit</a></li>
+                          <li><a href="##">Trash</a></li>
+                        </ul>
+                      </span>
+!>
