@@ -1,6 +1,7 @@
 import json
 import datetime
-import pytz
+import random
+from fuzzywuzzy import fuzz
 
 from django.core.management.base import BaseCommand
 from home.models import Agenda, Song
@@ -16,27 +17,31 @@ class Command(BaseCommand):
         self.songs = Song.objects.all()
 
         now = datetime.datetime.now()
-        file_path = 'C:/Users/Samuel/Desktop/'
+        file_path = 'C:/Users/D0290928/Desktop/'
         file_name = 'title_list-' + now.strftime('%d.%m.%Y_%H.%M.%S') + '.csv'
         self.complete_path = file_path + file_name
+        self.fuzzy_border = 90
 
     def handle(self, *args, **options):
         now = datetime.datetime.now()
         print('[' + str(now) + ']')
 
-        header_line = 'Id; Titel; Titel ohne Header; Funde'
+        header_line = 'Id; Titel; Titel ohne Header; eigene Funde; fuzzy_pattern, save'
 
         outfile = open(self.complete_path, 'a')
         outfile.write(header_line + '\n')
         outfile.close()
 
         tracked_events = Agenda.objects.all()
-
-        for event in tracked_events:
+        started = False
+        while not started:
+            event = random.choice(tracked_events)
+            event = tracked_events[3]
             church_tools_id = event.church_tools_id
             line_start = str(church_tools_id) + '; '
             if event.agenda_state:
-                print(church_tools_id)
+                started = True
+                print('ID: ' + str(church_tools_id))
                 agenda = event.content
                 agenda_dictionary = json.loads(agenda)
 
@@ -45,10 +50,10 @@ class Command(BaseCommand):
                         self.song_converter(church_tools_id, item)
             print()
 
-        now = datetime.datetime.now()
         self.calculate_all_books()
         self.information['books'] = self.books
         print(self.information)
+        now = datetime.datetime.now()
         print('[' + str(now) + ']')
         return
 
@@ -60,13 +65,12 @@ class Command(BaseCommand):
                 line = str(event_id) + '; '
                 title = item['title']
                 line = line + title.replace(';', ',-') + "; "
-                print(title)
+                print('Titel: ' + title)
                 if ':' in title:
                     title_split = title.split(':')
                     if len(title_split) > 0:
                         title_without_header = title_split[1]
                         line = line + title_without_header.replace(';', ',-') + "; "
-                        print(title_without_header)
                         title_without_header = ''
                         for split in title_split:
                             if title_split.index(split) != 0:
@@ -75,7 +79,20 @@ class Command(BaseCommand):
                         songs_founded = self.search_song(title_without_header)
                         song_strings = []
                         for song in songs_founded:
-                            song_strings.append(song.title)
+                            song_strings.append('ID: ' + str(song.id) + '  ' + song.title)
+
+                        line = line + str(song_strings) + "; "
+                        song_strings = []
+
+                        fuzzy_matches, hunderter = self.fuzzy_pattern(title)
+                        for song in fuzzy_matches:
+                            song_strings.append('ID: ' + str(song.id) + '  ' + song.title)
+
+                        line = line + str(song_strings) + "; "
+                        song_strings = []
+
+                        for song in hunderter:
+                            song_strings.append('ID: ' + str(song.id) + '  ' + song.title)
 
                         line = line + str(song_strings) + "; "
 
@@ -116,3 +133,36 @@ class Command(BaseCommand):
                 if song.title == title:
                     songs_founded.append(song)
         return songs_founded
+
+    def fuzzy_pattern(self, title):
+        songs_founded = []
+        hunderter_founds = []
+
+        highest = 0
+        select = ''
+
+        for song in self.songs:
+            fuzzy_value_1 = fuzz.partial_ratio(song.title, title)
+            fuzzy_value_2 = fuzz.partial_ratio(song.titleLang2, title)
+            fuzzy_value_3 = fuzz.partial_ratio(song.titleLang3, title)
+            fuzzy_value_4 = fuzz.partial_ratio(song.titleLang4, title)
+
+            if fuzzy_value_1 == 100 or fuzzy_value_2 == 100 or fuzzy_value_3 == 100 or fuzzy_value_4 == 100:
+                hunderter_founds.append(song)
+
+            if fuzzy_value_2 > highest:
+                highest = fuzzy_value_2
+                print('{} "{}" "{}" "{}" "{}"'.format(fuzzy_value_2, song.id, song.title, song.churchSongID, title))
+
+            if fuzzy_value_1 > self.fuzzy_border or fuzzy_value_2 > self.fuzzy_border or \
+                    fuzzy_value_3 > self.fuzzy_border or fuzzy_value_4 > self.fuzzy_border:
+                songs_founded.append(song)
+
+        if not songs_founded:
+            for song in self.songs:
+                fuzzy_value = fuzz.ratio(song.churchSongID, title)
+                if fuzzy_value > highest:
+                    highest = fuzzy_value
+                    print('{} "{}" "{}" "{}" "{}"'.format(fuzzy_value, song.id, song.title, song.churchSongID, title))
+
+        return songs_founded, hunderter_founds

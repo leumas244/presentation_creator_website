@@ -22,6 +22,7 @@ class AdminWeekMotto(admin.ModelAdmin):
 class AdminSong(admin.ModelAdmin):
     list_display = ['id',
                     'title',
+                    'churchSongID',
                     'update_date',
                     'creation_date',
                     ]
