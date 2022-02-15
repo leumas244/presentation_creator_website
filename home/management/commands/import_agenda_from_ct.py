@@ -34,12 +34,12 @@ class Command(BaseCommand):
                     tracked_agenda = Agenda.objects.get(church_tools_id=event['id'])
                     agenda_state = self.get_agenda_state_by_event_id(agenda)
                     if agenda_state:
-                        if str(agenda) == tracked_agenda.content:
+                        if agenda == json.loads(tracked_agenda.content):
                             print(str(tracked_agenda.church_tools_id) + ' has no update!')
                         else:
                             print(str(tracked_agenda.church_tools_id) + ' has an updated!')
                             try:
-                                tracked_agenda.content = agenda
+                                tracked_agenda.content = json.dumps(agenda)
                                 tracked_agenda.agenda_state = agenda_state
                                 tracked_agenda.save()
                                 print(str(tracked_agenda.church_tools_id) + ' have been updated!')
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                         new_agenda = Agenda(church_tools_id=event['id'], title=event['name'],
                                             date=self.get_right_time(event['startDate']), agenda_state=agenda_state)
                         if agenda_state:
-                            new_agenda.content = agenda
+                            new_agenda.content = json.dumps(agenda)
                         new_agenda.save()
                         print(str(new_agenda.church_tools_id) + ' has been created!')
                     except Exception as e:

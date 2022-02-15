@@ -1,0 +1,118 @@
+import json
+import datetime
+import pytz
+
+from django.core.management.base import BaseCommand
+from home.models import Agenda, Song
+
+
+class Command(BaseCommand):
+    help = 'Import automatically agendas from CT to database'
+
+    def __init__(self, stdout=None, stderr=None, no_color=False, force_color=False):
+        super().__init__(stdout, stderr, no_color, force_color)
+        self.information = {}
+        self.books = {}
+        self.songs = Song.objects.all()
+
+        now = datetime.datetime.now()
+        file_path = 'C:/Users/Samuel/Desktop/'
+        file_name = 'title_list-' + now.strftime('%d.%m.%Y_%H.%M.%S') + '.csv'
+        self.complete_path = file_path + file_name
+
+    def handle(self, *args, **options):
+        now = datetime.datetime.now()
+        print('[' + str(now) + ']')
+
+        header_line = 'Id; Titel; Titel ohne Header; Funde'
+
+        outfile = open(self.complete_path, 'a')
+        outfile.write(header_line + '\n')
+        outfile.close()
+
+        tracked_events = Agenda.objects.all()
+
+        for event in tracked_events:
+            church_tools_id = event.church_tools_id
+            line_start = str(church_tools_id) + '; '
+            if event.agenda_state:
+                print(church_tools_id)
+                agenda = event.content
+                agenda_dictionary = json.loads(agenda)
+
+                for item in agenda_dictionary['data']['items']:
+                    if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
+                        self.song_converter(church_tools_id, item)
+            print()
+
+        now = datetime.datetime.now()
+        self.calculate_all_books()
+        self.information['books'] = self.books
+        print(self.information)
+        print('[' + str(now) + ']')
+        return
+
+    def song_converter(self, event_id, item):
+        title = item['title']
+        if ':' in title:
+            title_split = title.split(':')
+            if 'Lied' in title_split[0] or 'lied' in title_split[0]:
+                line = str(event_id) + '; '
+                title = item['title']
+                line = line + title.replace(';', ',-') + "; "
+                print(title)
+                if ':' in title:
+                    title_split = title.split(':')
+                    if len(title_split) > 0:
+                        title_without_header = title_split[1]
+                        line = line + title_without_header.replace(';', ',-') + "; "
+                        print(title_without_header)
+                        title_without_header = ''
+                        for split in title_split:
+                            if title_split.index(split) != 0:
+                                title_without_header = title_without_header + split
+
+                        songs_founded = self.search_song(title_without_header)
+                        song_strings = []
+                        for song in songs_founded:
+                            song_strings.append(song.title)
+
+                        line = line + str(song_strings) + "; "
+
+                with open(self.complete_path, 'a') as outfile:
+                    outfile.write(line + '\n')
+                self.get_books(title)
+
+        else:
+            print('Cloud not parse')
+        return
+
+    def get_books(self, title):
+        list_of_books = ['FJ 1', 'FJ1', 'FJ 2', 'FJ2', 'FJ 3', 'FJ3', 'FJ 4', 'FJ4', 'FJ 5', 'FJ5',
+                         'CCLI', 'GL', 'JuF', 'GLB']
+
+        for book in list_of_books:
+            if book in title:
+                if book in self.books:
+                    self.books[book] = self.books[book] + 1
+                else:
+                    self.books[book] = 0
+
+    def calculate_all_books(self):
+        counter = 0
+        for book in self.books:
+            counter = counter + self.books[book]
+        self.books['Gesamt'] = counter
+        return
+
+    def search_song(self, title_without_header):
+        songs_founded = []
+        if ';' in title_without_header:
+            title_without_header_split = title_without_header.split(';')
+            title = title_without_header_split[0]
+            if title[0] == ' ':
+                title = title[1:len(title)]
+            for song in self.songs:
+                if song.title == title:
+                    songs_founded.append(song)
+        return songs_founded
