@@ -150,11 +150,11 @@ class Command(BaseCommand):
             if fuzzy_value_1 == 100 or fuzzy_value_2 == 100 or fuzzy_value_3 == 100 or fuzzy_value_4 == 100:
                 hunderter_founds.append(song)
 
-            if fuzzy_value_2 > highest:
+            elif fuzzy_value_2 > highest:
                 highest = fuzzy_value_2
-                print('{} "{}" "{}" "{}" "{}"'.format(fuzzy_value_2, song.id, song.title, song.churchSongID, title))
+                print('{} "{}" "{}" "{}" "{}"'.format(fuzzy_value_2, song.id, song.titleLang2, song.churchSongID, title))
 
-            if fuzzy_value_1 > self.fuzzy_border or fuzzy_value_2 > self.fuzzy_border or \
+            elif fuzzy_value_1 > self.fuzzy_border or fuzzy_value_2 > self.fuzzy_border or \
                     fuzzy_value_3 > self.fuzzy_border or fuzzy_value_4 > self.fuzzy_border:
                 songs_founded.append(song)
 
