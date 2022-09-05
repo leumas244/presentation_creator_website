@@ -8,7 +8,7 @@ from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.contrib.auth import update_session_auth_hash
 
 from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
-from  .churchtools_connection_package.agenda_songbeamer_converter import get_event_date_from_agenda
+from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information
 
 def logout(sender, user, request, **kwargs):
     ip = request.META.get('REMOTE_ADDR')
@@ -91,10 +91,8 @@ def settings(request):
 
 def agenda_by_identifier(request, identifier):
     if request.user.is_authenticated:
-        agenda = get_agenda_by_event_id(identifier)
-        service_date = get_event_date_from_agenda(agenda)
+        agenda_information = get_all_necessary_agenda_information(identifier)
         dates = {'id': identifier,
-                 'service_date': service_date,
                  }
 
         return render(request, 'sites/agenda_by_id.html', dates)

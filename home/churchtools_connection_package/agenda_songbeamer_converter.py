@@ -5,13 +5,17 @@ def get_event_date_from_agenda(agenda_dictionary):
     return agenda_dictionary['data']['name'][0:10]
 
 
+def get_all_necessary_agenda_information(agenda_id):
+    pass
+
+
 '''
 def create_presentation(id_number, countdown_path):
     datas = get_agenda_by_event_id(id_number)
 
     col_filename, pptx_filename = initial_a_new_godi(datas)
     add_item_state(col_filename, datas['data']['isFinal'])
-
+ 
     set_weekvers_in_pp_by_placeholder(pptx_filename, form_godi_date(datas))
 
     for item in datas['data']['items']:
