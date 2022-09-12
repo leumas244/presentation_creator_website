@@ -86,3 +86,20 @@ class Agenda(models.Model):
 
     def __str__(self):
         return self.title + str(self.date)
+
+
+class Sended_Email(models.Model):
+    id = models.AutoField(primary_key=True)
+    receiver_mail = models.CharField('Empfänger-Mailadresse', blank=False, max_length=200, null=False)
+    sender_mail = models.CharField('Sender-Mailadresse', blank=False, max_length=200, null=False)
+    content = models.TextField('Inhalt', blank=False, null=False)
+    subject = models.CharField('Betreff', blank=False, max_length=200, null=False)
+    error_massage = models.TextField('Error-Nachricht', blank=True, null=True)
+    send_status = models.BooleanField('Gedendet')
+    creation_date = models.DateTimeField('Erstellt', auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Sended_Emails"
+
+    def __str__(self):
+        return self.receiver_mail + "_" + str(self.creation_date)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WeekMotto, Song, Agenda
+from .models import WeekMotto, Song, Agenda, Sended_Email
 
 
 # Register your models here.
@@ -39,6 +39,19 @@ class AdminAgenda(admin.ModelAdmin):
                     ]
 
 
+class AdminSended_Email(admin.ModelAdmin):
+    list_display = ['id',
+                    'receiver_mail',
+                    'sender_mail',
+                    'content',
+                    'subject',
+                    'error_massage',
+                    'send_status',
+                    'creation_date',
+                    ]
+
+
 admin.site.register(WeekMotto, AdminWeekMotto)
 admin.site.register(Song, AdminSong)
 admin.site.register(Agenda, AdminAgenda)
+admin.site.register(Sended_Email, AdminSended_Email)
