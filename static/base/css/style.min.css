@@ -1493,6 +1493,57 @@ button.disabled:focus {
     background-color: rgba(75, 222, 151, .1)
 }
 
+.badge-active-agenda,
+.badge-disabled-agenda,
+.badge-pending-agenda,
+.badge-success-agenda,
+.badge-trashed-agenda {
+    padding: 10px;
+    width: auto;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.67;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    border-radius: 100px;
+    text-align: center;
+    display: inline-block;
+}
+
+.badge-active-agenda {
+    color: #5887ff;
+    background-color: rgba(88, 135, 255, .1)
+}
+
+.badge-pending-agenda {
+    color: #ffb648;
+    background-color: rgba(255, 172, 50, .1)
+}
+
+.badge-disabled-agenda {
+    color: #fff;
+    background-color: #ffb648
+}
+
+.badge-trashed-agenda {
+    color: #f26464;
+    background-color: rgba(245, 91, 93, .1)
+}
+
+.badge-success-agenda {
+    color: #4bde97;
+    background-color: rgba(75, 222, 151, .1)
+}
+
 input {
     border-radius: 6px;
     background-color: #eff0f6;
@@ -1649,6 +1700,26 @@ label {
 
 .users-table tbody {
     font-size: 14px
+}
+
+.users-table .before,
+.users-table .before:hover { 
+    background-color: #dfe4ff;
+}
+
+.darkmode .users-table .before,
+.darkmode .users-table .before:hover { 
+    background-color: #2e303c;
+}
+
+.users-table .header,
+.users-table .header:hover {
+    background-color: #95beff;
+}
+
+.darkmode .users-table .header,
+.darkmode .users-table .header:hover {
+    background-color: #405679;
 }
 
 .users-table tbody tr:last-child .users-item-dropdown {

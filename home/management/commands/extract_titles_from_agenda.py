@@ -17,7 +17,7 @@ class Command(BaseCommand):
         self.songs = Song.objects.all()
 
         now = datetime.datetime.now()
-        file_path = 'C:/Users/D0290928/Desktop/'
+        file_path = 'C:/Users/Samuel/Desktop/'
         file_name = 'title_list-' + now.strftime('%d.%m.%Y_%H.%M.%S') + '.csv'
         self.complete_path = file_path + file_name
         self.fuzzy_border = 90
@@ -36,7 +36,7 @@ class Command(BaseCommand):
         started = False
         while not started:
             event = random.choice(tracked_events)
-            event = tracked_events[3]
+            #event = tracked_events[3]
             church_tools_id = event.church_tools_id
             line_start = str(church_tools_id) + '; '
             if event.agenda_state:

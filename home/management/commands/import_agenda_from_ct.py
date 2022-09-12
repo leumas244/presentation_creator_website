@@ -56,6 +56,8 @@ class Command(BaseCommand):
                                             date=self.get_right_time(event['startDate']), agenda_state=agenda_state)
                         if agenda_state:
                             new_agenda.content = json.dumps(agenda)
+                        else:
+                            new_agenda.content = '{"data":""}'
                         new_agenda.save()
                         print(str(new_agenda.church_tools_id) + ' has been created!')
                     except Exception as e:

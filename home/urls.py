@@ -10,4 +10,5 @@ urlpatterns = [
     path('Passwort-aendern/', views.password_change, name="change_password"),
     path('Einstellungen/', views.settings, name='settings'),
     path('Agenda/<int:identifier>/', views.agenda_by_identifier, name='agenda_by_identifier'),
+    path('base/', views.base, name='base'),
 ]

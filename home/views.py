@@ -10,6 +10,7 @@ from django.contrib.auth import update_session_auth_hash
 from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
 from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information
 
+
 def logout(sender, user, request, **kwargs):
     ip = request.META.get('REMOTE_ADDR')
     messages.success(request, 'Du wurdest ausgeloggt.')
@@ -27,7 +28,7 @@ user_logged_in.connect(loginsuccessful)
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
-        events = get_list_of_events()
+        events = get_list_of_events(start="2022-09-05", to="2022-10-05")
         dates = {'events': events}
 
         return render(request, 'sites/home.html', dates)
@@ -93,9 +94,21 @@ def agenda_by_identifier(request, identifier):
     if request.user.is_authenticated:
         agenda_information = get_all_necessary_agenda_information(identifier)
         dates = {'id': identifier,
+                 'agenda_information': agenda_information,
                  }
 
         return render(request, 'sites/agenda_by_id.html', dates)
 
     else:
         return redirect('login')
+
+
+def base(request):
+    if request.user.is_authenticated:
+        dates = {}
+
+        return render(request, 'sites/base.html', dates)
+
+    else:
+        return redirect('login')
+

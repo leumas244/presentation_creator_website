@@ -3,11 +3,15 @@ import requests
 import datetime
 import pytz
 
-from .churchtools_settings import login_token_url, base_url, run_mode, test_data, serviceId_leitung, serviceId_predigt, \
+from .churchtools_settings import login_token, base_url, run_mode, test_data, serviceId_leitung, serviceId_predigt, \
     serviceId_presentation
 
 
 def request_to_church_tools(url):
+    login_token_url = "?login_token=" + str(login_token)
+    if '&' in url:
+        login_token_url = login_token_url.replace('?', '')
+
     response = requests.get(url + login_token_url)
 
     # form into dictionary
@@ -53,11 +57,11 @@ def get_events(start=None, to=None):
     if start is None and to is None:
         get_agenda_url = base_url + "events"
     elif start is not None and to is not None:
-        get_agenda_url = base_url + "events?from=" + start + '&to=' + to
+        get_agenda_url = base_url + "events?from=" + start + '&to=' + to + "&"
     elif start is None and to is not None:
-        get_agenda_url = base_url + "events?to=" + to
+        get_agenda_url = base_url + "events?to=" + to + "&"
     else:
-        get_agenda_url = base_url + "events?from=" + start
+        get_agenda_url = base_url + "events?from=" + start + "&"
 
     data = request_to_church_tools(get_agenda_url)
     return data
@@ -66,7 +70,7 @@ def get_events(start=None, to=None):
 def get_right_time(start_date):
     date_time_obj = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%SZ')
     timezone = pytz.timezone("Europe/Berlin")
-    right_time = pytz.utc.localize(date_time_obj, is_dst=None).astimezone(timezone).strftime('%d.%m.%Y  %H:%M')
+    right_time = pytz.utc.localize(date_time_obj, is_dst=None).astimezone(timezone)
     return right_time
 
 
@@ -104,11 +108,11 @@ def get_last_agenda_change_person_by_agenda(agenda_dictionary):
     return person_name
 
 
-def get_list_of_events():
+def get_list_of_events(start=None, to=None):
     if run_mode == 'testing':
         event_list = test_data
     else:
-        events = get_events()
+        events = get_events(start=start, to=to)
 
         events = events['data']
         event_list = []

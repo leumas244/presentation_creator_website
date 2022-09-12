@@ -22,7 +22,7 @@
                     <tbody>
                     {% for event in events %}
                         <tr>
-                            <td><strong>{{ event.date }} Uhr</strong></td>
+                            <td><strong>{{ event.date|date:'d.m.Y H:i' }} Uhr</strong></td>
                             <td>{{ event.name }}</td>
                             <td>
                                 Leitung: {{ event.service_leitung }}
@@ -39,11 +39,11 @@
                             <td>
                                 {% if event.agenda_state == 'final' %}
                                     <span class="badge-success">finaler Ablauf</span>
-                                    Letzte Änderung: {{ event.last_change_date }}
+                                    Letzte Änderung: {{ event.last_change_date|date:'d.m.Y H:i' }}
                                     <br>Von: {{ event.last_change_person }}
                                 {% elif event.agenda_state == 'not_final' %}
                                     <span class="badge-active">aktiver Ablauf</span>
-                                    Letzte Änderung: {{ event.last_change_date }}
+                                    Letzte Änderung: {{ event.last_change_date|date:'d.m.Y H:i' }}
                                     <br>Von: {{ event.last_change_person }}
                                 {% else %}
                                     <span class="badge-trashed">kein Ablauf</span>
