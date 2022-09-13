@@ -30,7 +30,7 @@ user_logged_in.connect(loginsuccessful)
 def home(request):
     if request.user.is_authenticated:
         try:
-            events = get_list_of_events(start="2022-09-05", to="2022-10-05")
+            events = get_list_of_events(mode='short')
             dates = {'events': events}
 
             return render(request, 'sites/home.html', dates)
@@ -38,7 +38,7 @@ def home(request):
             user = request.user.username
             error = str(e)
             send_exeption_mail(error, user)
-            error_info = "Leider gibt es eine Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
+            error_info = "Leider gibt es ein Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
             dates = {'error_info': error_info}
             return render(request, 'sites/server_error.html', dates)
 
@@ -112,7 +112,7 @@ def agenda_by_identifier(request, identifier):
             user = request.user.username
             error = str(e)
             send_exeption_mail(error, user)
-            error_info = "Leider gibt es eine Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
+            error_info = "Leider gibt es ein Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
             dates = {'error_info': error_info}
             return render(request, 'sites/server_error.html', dates)
 

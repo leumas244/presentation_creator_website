@@ -108,11 +108,16 @@ def get_last_agenda_change_person_by_agenda(agenda_dictionary):
     return person_name
 
 
-def get_list_of_events(start=None, to=None):
+def get_list_of_events(mode='short'):
     if run_mode == 'testing':
         event_list = test_data
     else:
-        events = get_events(start=start, to=to)
+        if mode == 'short':
+            start = datetime.date.today()
+            end = start + datetime.timedelta(days=31)
+            events = get_events(start=start.strftime("%Y-%m-%d"), to=end.strftime("%Y-%m-%d"))
+        else:
+            events = get_events()
 
         events = events['data']
         event_list = []
