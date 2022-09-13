@@ -35,7 +35,10 @@ def home(request):
 
             return render(request, 'sites/home.html', dates)
         except Exception as e:
-            error_info = "Leider gibt es eine Server Problem.. \nVersuche es später nochmal. Eine Mail an den Administrator wurde gesendet"
+            user = request.user.username
+            error = str(e)
+            send_exeption_mail(error, user)
+            error_info = "Leider gibt es eine Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
             dates = {'error_info': error_info}
             return render(request, 'sites/server_error.html', dates)
 
@@ -106,9 +109,10 @@ def agenda_by_identifier(request, identifier):
 
             return render(request, 'sites/agenda_by_id.html', dates)
         except Exception as e:
+            user = request.user.username
             error = str(e)
-            send_exeption_mail(error)
-            error_info = "Leider gibt es eine Server Problem.. \nVersuche es später nochmal. Eine Mail an den Administrator wurde gesendet"
+            send_exeption_mail(error, user)
+            error_info = "Leider gibt es eine Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
             dates = {'error_info': error_info}
             return render(request, 'sites/server_error.html', dates)
 
