@@ -1,4 +1,5 @@
 import re
+import os
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
@@ -6,9 +7,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.contrib.auth import update_session_auth_hash
+from django.http import HttpResponse
 
 from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
-from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information
+from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information, create_songbeamer_file, create_presentation_file
 from .helper_package.helper_funktions import send_exeption_mail
 
 
@@ -107,6 +109,20 @@ def agenda_by_identifier(request, identifier):
                     'agenda_information': agenda_information,
                     }
 
+            if request.method == 'POST' and 'download_songbeamer_file' in request.POST:
+                user = request.user
+                id = request.POST['download_songbeamer_file']
+                songbeamer_file = create_songbeamer_file(id, user)
+                download_trigger = download(request, songbeamer_file)
+                return download_trigger
+
+            if request.method == 'POST' and 'download_presentation_file' in request.POST:
+                user = request.user
+                id = request.POST['download_presentation_file']
+                presentation_file = create_presentation_file(id, user)
+                download_trigger = download(request, presentation_file)
+                return download_trigger
+
             return render(request, 'sites/agenda_by_id.html', dates)
         except Exception as e:
             user = request.user.username
@@ -128,4 +144,21 @@ def base(request):
 
     else:
         return redirect('login')
+
+
+def download(request, path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    try:
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="font/otf")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+
+    except Exception as e:
+            user = request.user.username
+            error = str(e)
+            send_exeption_mail(error, user)
+            error_info = "Leider gibt es ein Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
+            dates = {'error_info': error_info}
+            return render(request, 'sites/server_error.html', dates)
 

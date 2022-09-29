@@ -6,9 +6,7 @@
 {% endblock %}
 
 {% block main %}
-  <div class="row">
-    <div class="col-lg-9">
-      {% if agenda_information.isFinal %}
+{% if agenda_information.isFinal %}
         <div>
           <h2 class="main-title" style="display: inline-block;">{{ agenda_information.title }}</h2>
           <span class="badge-success-agenda">finaler Ablauf</span>
@@ -19,6 +17,8 @@
           <span class="badge-active-agenda">aktiver Ablauf</span>
         </div>
       {% endif %}
+  <div class="row">
+    <div class="col-lg-9">
       <div class="users-table table-wrapper">
         <table class="posts-table">
           <thead>
@@ -45,6 +45,17 @@
                   </td>
                   <td></td>
                 </tr>
+              {% elif item.type == 'song' %}
+                <tr class="song">
+                  <td>{{ item.time|date:'H:i' }}</td>
+                  <td>
+                    <strong>{{ item.title }}</strong>
+                    {% if item.song %}
+                    <p>{{ item.song }}</p>
+                    {% endif %}
+                  </td>
+                  <td>{{ item.responsible }}</td>
+                </tr>
               {% else %}
                 <tr>
                   <td>{{ item.time|date:'H:i' }}</td>
@@ -59,8 +70,6 @@
                         {% endfor %}
                       </ul>
                     </details>
-                    {% elif item.song %}
-                    <p>{{ item.song }}</p>
                     {% endif %}
                   </td>
                   <td>{{ item.responsible }}</td>
@@ -70,5 +79,28 @@
         </table>
       </div>
     </div>
+      <div class="col-lg-3">
+        <form action="" method="POST">
+        {% csrf_token %}
+        <article class="side-block-item" style="margin-top: 48px">
+          <div class="side-block-icon primary">
+            <i data-feather="download" aria-hidden="true"></i>
+          </div>
+          <div class="side-block-info">
+            <p class="side-block-info__num">Songbeamer-Datei</p>
+            <button type="submit" class="transparent-btn" name="download_songbeamer_file" value="{{ event.id }}">Download</button>
+          </div>
+        </article>
+        <article class="side-block-item">
+          <div class="stat-cards-icon warning">
+            <i data-feather="file" aria-hidden="true"></i>
+          </div>
+          <div class="stat-cards-info">
+            <p class="stat-cards-info__num">Präsentation</p>
+            <button type="submit" class="transparent-btn" name="download_presentation_file" value="{{ event.id }}">Download</button>
+          </div>
+        </article>
+        </form>
+      </div>
   </div>
 {% endblock %}

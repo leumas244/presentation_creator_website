@@ -1114,7 +1114,9 @@ button.disabled:focus {
 
 .transparent-btn {
     background-color: transparent;
-    border: 2px solid transparent!important
+    border: 2px solid transparent!important;
+    color: #b9b9b9;
+    font-size: 14px;
 }
 
 .primary-default-btn,
@@ -1640,6 +1642,13 @@ label {
     color: #767676
 }
 
+.darkmode .users-table table,
+.users-table-info {
+    line-height: 1.4;
+    letter-spacing: -.3px;
+    color: white
+}
+
 .users-table table {
     width: 100%;
     text-align: left;
@@ -1652,7 +1661,8 @@ label {
 .users-table-info {
     height: 48px;
     border-bottom: 1.2px solid #dadbe4;
-    font-size: 14px
+    font-size: 14px;
+    color: black;
 }
 
 .users-table-info th {
@@ -1720,6 +1730,22 @@ label {
 .darkmode .users-table .header,
 .darkmode .users-table .header:hover {
     background-color: #405679;
+}
+
+.users-table .song {
+    background-color: #ffdec1;
+}
+
+.users-table .song:hover {
+    background-color: #ffa75a;
+}
+
+.darkmode .users-table .song {
+    background-color: #a86d39;
+}
+
+.darkmode .users-table .song:hover {
+    background-color: #cc6000;
 }
 
 .users-table tbody tr:last-child .users-item-dropdown {
@@ -2363,6 +2389,17 @@ label {
     justify-content: flex-end
 }
 
+.side-block {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px
+}
+
 .stat-cards {
     margin-right: -10px;
     margin-left: -10px
@@ -2371,6 +2408,111 @@ label {
 .stat-cards>div {
     padding-left: 10px;
     padding-right: 10px
+}
+
+.side-block-icon,
+.side-block-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.side-block-item {
+    padding: 24px 19px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 15px 50px rgba(160, 163, 189, .1);
+    box-shadow: 0 15px 50px rgba(160, 163, 189, .1);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.side-block-icon {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 9px
+}
+
+.side-block-icon.primary {
+    background-color: rgba(47, 73, 209, .1);
+    color: #2f49d1
+}
+
+.side-block-icon.warning {
+    background-color: rgba(255, 182, 72, .1);
+    color: #ffb648
+}
+
+.side-block-icon.purple {
+    background-color: rgba(95, 46, 234, .1);
+    color: #5f2eea
+}
+
+.side-block-icon.success {
+    background-color: rgba(75, 222, 151, .1);
+    color: #4bde97
+}
+
+.side-block-info__num {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.22;
+    color: #171717;
+    margin-bottom: 4px
+}
+
+.side-block-info__title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.22;
+    color: #b9b9b9;
+    margin-bottom: 6px
+}
+
+.side-block-info__profit,
+.side-block-info__progress {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1.22
+}
+
+.side-block-info__progress {
+    color: #b9b9b9
+}
+
+.side-block-info__profit {
+    margin-right: 10px
+}
+
+.side-block-info__profit.success {
+    color: #4bde97
+}
+
+.side-block-info__profit.danger {
+    color: #f26464
+}
+
+.side-block-info__profit.warning {
+    color: #ffb648
+}
+
+.side-block-info__profit svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px
 }
 
 .stat-cards-icon,
@@ -3064,7 +3206,17 @@ label {
     box-shadow: none
 }
 
+.darkmode .side-block-item {
+    background-color: #222235;
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
 .darkmode .stat-cards-info__num {
+    color: #eff0f6
+}
+
+.darkmode .side-block-info__num {
     color: #eff0f6
 }
 

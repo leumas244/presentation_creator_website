@@ -10,6 +10,7 @@ def get_event_date_from_agenda(agenda_dictionary):
 
 
 def get_all_necessary_agenda_information(agenda_id):
+    songs = Song.objects.all()
     agenda = get_agenda_by_event_id(agenda_id)
     data_dic = {"title": agenda["data"]["name"], "isFinal": agenda["data"]["isFinal"]}
     items = []
@@ -27,32 +28,33 @@ def get_all_necessary_agenda_information(agenda_id):
                 item_data["note"] = item["note"].split("\n-")
             else:
                 item_data["note"] = [item["note"]]
+
         responsible = item["responsible"]["text"]
         for person in item["responsible"]["persons"]:
             if person["accepted"]:
                 if person["service"] in responsible:
-                    responsible = responsible.replace(
-                        person["service"], person["person"]["title"]
-                    )
+                    responsible = responsible.replace(person["service"], person["person"]["title"])
 
         item_data["responsible"] = responsible
         items.append(item_data)
 
         if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
-            song = song_converter(item)
-            try:
-                song_string = "{}; {}".format(song[1].title, song[1].churchSongID)
-            except:
-                song_string = song[1]
-            string = "{}% {}".format(song[0], song_string)
-            item_data["song"] = string
+            if ":" in item['title']:
+                item_data["type"] = "song"
+                song = song_converter(songs, item)
+                try:
+                    song_string = "{}; {}".format(song[1].title, song[1].churchSongID)
+                except:
+                    song_string = song[1]
+                string = "{}% {}".format(song[0], song_string)
+                item_data["song"] = string
 
     data_dic["items"] = items
 
     return data_dic
 
 
-def song_converter(item):
+def song_converter(songs, item):
     title = item["title"]
 
     if ":" in title:
@@ -64,10 +66,7 @@ def song_converter(item):
                     title_without_header = title_without_header + split
             if title_without_header == "" or title_without_header == " ":
                 return [0, "Kein Titel"]
-            hundred, border_songs, selected_song = fuzzy_pattern(
-                title_without_header
-            )
-
+            hundred, border_songs, selected_song = fuzzy_pattern(songs, title_without_header)
             print("AUSGEWÄLT:")
             if hundred:
                 song = hundred[0]
@@ -104,8 +103,7 @@ def song_converter(item):
         return [0, "Problem! Kein Doppelpunkt gefunden!"]
 
 
-def fuzzy_pattern(title):
-    songs = Song.objects.all()
+def fuzzy_pattern(songs, title):
     fuzzy_founds = []
     hunderter_founds = []
 
@@ -229,6 +227,12 @@ def fuzzy_pattern(title):
     return hundred, border_dictionary, selected_dictionary
 
 
+def create_presentation_file(id, user):
+    pass
+
+
+def create_songbeamer_file(id, user):
+    pass
 """
 def create_presentation(id_number, countdown_path):
     datas = get_agenda_by_event_id(id_number)
@@ -263,4 +267,5 @@ def create_presentation(id_number, countdown_path):
         elif item['type'] == 'song':
             song = get_song_from_song_type(item['song']['title'])
             add_item_song(col_filename, song, item['song']['title'])
-    return col_filename, pptx_filename """
+    return col_filename, pptx_filename
+    """
