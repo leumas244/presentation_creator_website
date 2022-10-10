@@ -92,7 +92,11 @@ def get_service_person_by_service_id_by_event_id(event_dictionary, service_id):
             person = eventServices['name']
             if person is None:
                 person = ''
-            return person
+            else:
+                if eventServices['agreed']:
+                    return person
+                else:
+                    return person + '?'
     return person
 
 

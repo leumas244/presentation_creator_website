@@ -23,6 +23,7 @@ class Command(BaseCommand):
         print('[' + start_time.strftime('%d.%m.%Y_%H.%M.%S') + ']')
 
         event = random.choice(self.tracked_events)
+        event = self.tracked_events[31]
         church_tools_id = event.church_tools_id
 
         if event.agenda_state:
@@ -32,9 +33,10 @@ class Command(BaseCommand):
 
             for item in agenda_dictionary['data']['items']:
                 if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
-                    print('ITEM: "' + item['title'] + '"')
-                    self.song_converter(church_tools_id, item)
-                    print()
+                    if ":" in item['title']:
+                        print('ITEM: "' + item['title'] + '"')
+                        self.song_converter(church_tools_id, item)
+                        print()
 
         end_time = datetime.datetime.now()
         time_delta = end_time - start_time

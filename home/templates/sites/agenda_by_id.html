@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block main %}
+<form action="" method="POST">
+{% csrf_token %}
 {% if agenda_information.isFinal %}
         <div>
           <h2 class="main-title" style="display: inline-block;">{{ agenda_information.title }}</h2>
@@ -80,8 +82,6 @@
       </div>
     </div>
       <div class="col-lg-3">
-        <form action="" method="POST">
-        {% csrf_token %}
         <article class="side-block-item" style="margin-top: 48px">
           <div class="side-block-icon primary">
             <i data-feather="download" aria-hidden="true"></i>
@@ -100,7 +100,7 @@
             <button type="submit" class="transparent-btn" name="download_presentation_file" value="{{ event.id }}">Download</button>
           </div>
         </article>
-        </form>
       </div>
   </div>
+</form>
 {% endblock %}
