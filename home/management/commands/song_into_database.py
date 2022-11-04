@@ -2,7 +2,7 @@ import os
 import hashlib
 
 from django.core.management.base import BaseCommand
-from home.models import Song
+from home.models import Song, AdminSetting
 
 
 class Command(BaseCommand):
@@ -16,8 +16,9 @@ class Command(BaseCommand):
                          'oTitle', 'quickFind', 'rights', 'songbook', 'speed', 'titleFormat', 'titleLang2',
                          'titleLang3',
                          'titleLang4', 'translation', 'verseOrder', 'version']
-        path_folder = 'D:/Dropbox/Songs'
         tracked_songs = Song.objects.all()
+        admin_settings = AdminSetting.objects.get(id=1)
+        path_folder = admin_settings.song_folder
         song_file_path_tree = self.get_all_paths(path_folder)
         if not song_file_path_tree:
             print('FAILURE - Getting all file path')

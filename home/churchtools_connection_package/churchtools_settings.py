@@ -1,3 +1,5 @@
+from home.models import AdminSetting
+admin_setting = AdminSetting.objects.get(id=1)
 # mode can be production/testing. In testing mode the test_data have to be filled
 run_mode = 'run'
 test_data = [{'id': 629, 'name': 'Verbandsgottesdienst', 'date': '11.09.2022  10:30', 'agenda_state': 'not_found',
@@ -15,24 +17,17 @@ test_data = [{'id': 629, 'name': 'Verbandsgottesdienst', 'date': '11.09.2022  10
               'service_presentation': ''}]
 
 # variable settings
-countdown_file_path = ''
+song_folder = admin_setting.song_folder
 
-song_folder = ''
-
-powerpoint_vorlage = ''
-
-# normal settings
-songbooks = ['FJ', 'Fj', 'CCLI', 'GLB', 'JUF']
+powerpoint_vorlage = admin_setting.powerpoin_vorlage
 
 # church_tools settings
 serviceId_predigt = 1
 serviceId_leitung = 3
 serviceId_presentation = 7
 
-base_url = 'https://stamigruenstadt.church.tools/api/'
+base_url = admin_setting.base_url
 
-login_token = 'BWZvOMVP8tZeFA5IrfIvKkmazRrWVlHazL80H9XOazrxBhfctpONbFYKawRiHIPcs5BSHmlAwoARkrrKZR0iVjqgk46jtDnHQLBETZgRWu0PaTf7N7ToYqL7yYUXTfrCo9W7ESQleEoO4MXuOcQ3LWL95qDbS9OmykA4jGyEBhMKDNH9sTBN9VLmTLi5uJBBrAmaqLT6kScVEvzCS8NYL8MTkxSPtm8Ve6G95osEq7aJmy3CgnGxdSJDWSiFicsv'
-
-calenders = []
+login_token = admin_setting.login_token
 
 fuzzy_border = 90
