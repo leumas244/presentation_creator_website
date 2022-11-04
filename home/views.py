@@ -10,6 +10,7 @@ from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.contrib.auth import update_session_auth_hash
 from django.conf import settings
 from django.http import HttpResponse
+from .models import AdditionalUserInfo
 
 from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
 from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information, create_songbeamer_file, create_presentation_file
@@ -33,9 +34,13 @@ user_logged_in.connect(loginsuccessful)
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
+        user = request.user
+        add_user_info = AdditionalUserInfo.objects.get(user=user)
         try:
             events = get_list_of_events(mode='short')
-            dates = {'events': events}
+            dates = {'events': events,
+                     'add_user_info': add_user_info,
+                     }
 
             return render(request, 'sites/home.html', dates)
         except Exception as e:
@@ -59,6 +64,9 @@ def home(request):
 
 def password_change(request):
     if request.user.is_authenticated:
+        user = request.user
+        add_user_info = AdditionalUserInfo.objects.get(user=user)
+        dates = {'add_user_info': add_user_info,}
         if request.method == 'POST':
             form = PasswordChangeForm(user=request.user, data=request.POST)
             my_message = re.search('<ul class="errorlist"><li>(.+?)</li>', str(form))
@@ -70,9 +78,9 @@ def password_change(request):
             else:
                 messages.error(request,
                                str(my_message.group().replace('<ul class="errorlist"><li>', '').replace('</li>', '')))
-                return render(request, 'sites/change_password.html')
+                return render(request, 'sites/change_password.html', dates)
         else:
-            return render(request, 'sites/change_password.html')
+            return render(request, 'sites/change_password.html', dates)
 
     else:
         return redirect('login')
@@ -80,6 +88,9 @@ def password_change(request):
 
 def profile_settings(request):
     if request.user.is_authenticated:
+        user = request.user
+        add_user_info = AdditionalUserInfo.objects.get(user=user)
+        dates = {'add_user_info': add_user_info,}
         if request.method == 'POST':
             users = User.objects.get(first_name=request.user.first_name)
             # Nachnamen aendern und Log eintrag dazu erstellen
@@ -104,7 +115,7 @@ def profile_settings(request):
             # Seite neuladen
             return redirect('home')
         else:
-            return render(request, 'sites/profile_settings.html')
+            return render(request, 'sites/profile_settings.html', dates)
 
     else:
         return redirect('login')
@@ -112,12 +123,15 @@ def profile_settings(request):
 
 def agenda_by_identifier(request, identifier):
     if request.user.is_authenticated:
+        user = request.user
+        add_user_info = AdditionalUserInfo.objects.get(user=user)
         try:
             agenda_information = get_all_necessary_agenda_information(identifier)
             dates = {'id': identifier,
                     'agenda_information': agenda_information,
                     'song_counter': 1,
                     'internal_song_counter': 1,
+                    'add_user_info': add_user_info,
                     }
 
             if request.method == 'POST' and 'download_songbeamer_file' in request.POST:
@@ -161,7 +175,10 @@ def agenda_by_identifier(request, identifier):
 
 def base(request):
     if request.user.is_authenticated:
-        dates = {}
+        user = request.user
+        add_user_info = AdditionalUserInfo.objects.get(user=user)
+        dates = {'add_user_info': add_user_info,
+                 }
 
         return render(request, 'sites/base.html', dates)
 

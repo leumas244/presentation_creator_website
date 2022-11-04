@@ -1,11 +1,11 @@
-import imp
+#import imp
 from fuzzywuzzy import fuzz
 import os
 
 from .churchtoos_api_conection import get_agenda_by_event_id, get_right_time
 from .churchtools_settings import fuzzy_border
 from .songbeamer_file_creator import add_item_countdown, add_item_header, add_item_normal, add_item_song, add_item_state, add_item_vaterunser, create_a_new_songbeamer_file
-from home.models import Song
+from home.models import Song, AdditionalUserInfo, RenderdSongbeamerFile, Agenda
 
 
 def get_event_date_from_agenda(agenda_dictionary):
@@ -212,8 +212,8 @@ def create_songbeamer_file(id_number, user, songs):
     songbeamer_file = initial_a_new_songbeamer_file(agenda)
     add_item_state(songbeamer_file, agenda['data']['isFinal'])
 
-    add_user_info = user
-    countdown_path = ''
+    add_user_info = AdditionalUserInfo.objects.get(user=user)
+    countdown_path = add_user_info.countdown_file_path
 
     for item in agenda['data']['items']:
         if item['type'] == 'normal':
@@ -241,6 +241,12 @@ def create_songbeamer_file(id_number, user, songs):
             add_item_header(songbeamer_file, item['title'])
         
         counter += 1
+    try:
+        agenda = Agenda.objects.get(church_tools_id=id_number)
+        new_dataset = RenderdSongbeamerFile(user=user, agenda=agenda, songs=songs)
+    except:
+        new_dataset = RenderdSongbeamerFile(user=user, songs=songs)
+    new_dataset.save()
 
     return songbeamer_file
 

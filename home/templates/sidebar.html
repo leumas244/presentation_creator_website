@@ -89,9 +89,15 @@
         <a href="##" class="sidebar-user">
                     <span class="sidebar-user-img">
                         {% load static %}
-                <picture><source srcset="{% static 'base/img/avatar/avatar-illustrated-03.webp' %}"
+                {% if add_user_info.gender == 'female' %}
+                <picture><source srcset="{% static 'base/img/avatar/avatar-illustrated-01.webp' %}"
                                  type="image/webp"><img
-                        src="{% static 'base/img/avatar/avatar-illustrated-03.png' %}" alt="User name"></picture>
+                        src="{% static 'base/img/avatar/avatar-illustrated-01.png' %}" alt="User name"></picture>
+                {% else %}
+                <picture><source srcset="{% static 'base/img/avatar/avatar-illustrated-03.webp' %}"
+                                    type="image/webp"><img
+                            src="{% static 'base/img/avatar/avatar-illustrated-03.png' %}" alt="User name"></picture>
+                {% endif %}
             </span>
             <div class="sidebar-user-info">
                 <span class="sidebar-user__title">{{ user.first_name }}</span>
