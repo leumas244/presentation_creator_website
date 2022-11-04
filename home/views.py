@@ -1,5 +1,6 @@
 import re
 import os
+import sys, traceback
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
@@ -7,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.contrib.auth import update_session_auth_hash
+from django.conf import settings
 from django.http import HttpResponse
 
 from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
@@ -37,9 +39,16 @@ def home(request):
 
             return render(request, 'sites/home.html', dates)
         except Exception as e:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback_details = {
+                         'filename': str(exc_traceback.tb_frame.f_code.co_filename),
+                         'lineno'  : str(exc_traceback.tb_lineno),
+                         'name'    : str(exc_traceback.tb_frame.f_code.co_name),
+                         'type'    : str(exc_type.__name__),
+                         'message' : str(exc_value),
+                        }
             user = request.user.username
-            error = str(e)
-            send_exeption_mail(error, user)
+            send_exeption_mail(traceback_details, user)
             error_info = "Leider gibt es ein Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
             dates = {'error_info': error_info}
             return render(request, 'sites/server_error.html', dates)
@@ -69,7 +78,7 @@ def password_change(request):
         return redirect('login')
 
 
-def settings(request):
+def profile_settings(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             users = User.objects.get(first_name=request.user.first_name)
@@ -95,7 +104,7 @@ def settings(request):
             # Seite neuladen
             return redirect('home')
         else:
-            return render(request, 'sites/settings.html')
+            return render(request, 'sites/profile_settings.html')
 
     else:
         return redirect('login')
@@ -107,12 +116,19 @@ def agenda_by_identifier(request, identifier):
             agenda_information = get_all_necessary_agenda_information(identifier)
             dates = {'id': identifier,
                     'agenda_information': agenda_information,
+                    'song_counter': 1,
+                    'internal_song_counter': 1,
                     }
 
             if request.method == 'POST' and 'download_songbeamer_file' in request.POST:
                 user = request.user
-                id = request.POST['download_songbeamer_file']
-                songbeamer_file = create_songbeamer_file(id, user)
+                id_number = request.POST['download_songbeamer_file']
+                songs = {}
+                for entry in request.POST:
+                    if 'song_number' in entry:
+                        row_number = int(entry.replace('song_number', ''))
+                        songs[row_number] = request.POST[entry]
+                songbeamer_file = create_songbeamer_file(id_number, user, songs)
                 download_trigger = download(request, songbeamer_file)
                 return download_trigger
 
@@ -125,9 +141,16 @@ def agenda_by_identifier(request, identifier):
 
             return render(request, 'sites/agenda_by_id.html', dates)
         except Exception as e:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback_details = {
+                         'filename': str(exc_traceback.tb_frame.f_code.co_filename),
+                         'lineno'  : str(exc_traceback.tb_lineno),
+                         'name'    : str(exc_traceback.tb_frame.f_code.co_name),
+                         'type'    : str(exc_type.__name__),
+                         'message' : str(exc_value),
+                        }
             user = request.user.username
-            error = str(e)
-            send_exeption_mail(error, user)
+            send_exeption_mail(traceback_details, user)
             error_info = "Leider gibt es ein Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
             dates = {'error_info': error_info}
             return render(request, 'sites/server_error.html', dates)
@@ -155,9 +178,16 @@ def download(request, path):
             return response
 
     except Exception as e:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback_details = {
+                         'filename': str(exc_traceback.tb_frame.f_code.co_filename),
+                         'lineno'  : str(exc_traceback.tb_lineno),
+                         'name'    : str(exc_traceback.tb_frame.f_code.co_name),
+                         'type'    : str(exc_type.__name__),
+                         'message' : str(exc_value),
+                        }
             user = request.user.username
-            error = str(e)
-            send_exeption_mail(error, user)
+            send_exeption_mail(traceback_details, user)
             error_info = "Leider gibt es ein Server Problem.. Versuche es später nochmal. Eine Mail an den Administrator wurde gesendet."
             dates = {'error_info': error_info}
             return render(request, 'sites/server_error.html', dates)

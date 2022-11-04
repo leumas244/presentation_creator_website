@@ -53,7 +53,30 @@
                   <td>
                     <strong>{{ item.title }}</strong>
                     {% if item.song %}
-                    <p>{{ item.song }}</p>
+                    <fieldset>
+                    {% for song_list in item.song %}
+                      {% if song_list.0 == 0 %}
+                      <p><input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="no_song_set" checked style='display: none'/>{{ song_list.1}}</p>
+                      {% else %}
+                        {% if forloop.first %}
+                          {% if song_list.1.churchSongID %}
+                          <p><input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}" checked/>{{ song_list.0 }}% {{ song_list.1.title }}; {{ song_list.1.churchSongID }}</p>
+                          {% else %}
+                          <p><input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}" checked/>{{ song_list.0 }}% {{ song_list.1.title }}</p>
+                          {% endif %}
+                        {% else %}
+                          {% if song_list.1.churchSongID %}
+                          <p><input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}"/>{{ song_list.0 }}% {{ song_list.1.title }}; {{ song_list.1.churchSongID }}</p>
+                          {% else %}
+                          <p><input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}"/>{{ song_list.0 }}% {{ song_list.1.title }}</p>
+                          {% endif %}
+                        {% endif %}
+                        {% if forloop.last %}
+                          <p><input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="no_file_set"/>Keinen Song wählen</p>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                    </fieldset>
                     {% endif %}
                   </td>
                   <td>{{ item.responsible }}</td>
@@ -64,7 +87,7 @@
                   <td>
                     {{ item.title }}
                     {% if item.note %}
-                    <details>
+                    <details open>
                       <summary>weitere Infos</summary>
                       <ul style="list-style-type:disc">
                         {% for i in item.note %}
@@ -88,7 +111,7 @@
           </div>
           <div class="side-block-info">
             <p class="side-block-info__num">Songbeamer-Datei</p>
-            <button type="submit" class="transparent-btn" name="download_songbeamer_file" value="{{ event.id }}">Download</button>
+            <button type="submit" class="transparent-btn" name="download_songbeamer_file" value="{{ id }}">Download</button>
           </div>
         </article>
         <article class="side-block-item">
@@ -97,7 +120,7 @@
           </div>
           <div class="stat-cards-info">
             <p class="stat-cards-info__num">Präsentation</p>
-            <button type="submit" class="transparent-btn" name="download_presentation_file" value="{{ event.id }}">Download</button>
+            <button type="submit" class="transparent-btn" name="download_presentation_file" value="{{ id }}">Download</button>
           </div>
         </article>
       </div>

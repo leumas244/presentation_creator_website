@@ -35,4 +35,4 @@ login_token = 'BWZvOMVP8tZeFA5IrfIvKkmazRrWVlHazL80H9XOazrxBhfctpONbFYKawRiHIPcs
 
 calenders = []
 
-fuzzy_border = 80
+fuzzy_border = 90

@@ -33,10 +33,10 @@ def send_mail(receiver_name, receiver_mail, message, subject):
         mail_entry.save()
 
 
-def send_exeption_mail(error_message, username):
+def send_exeption_mail(traceback_details, username):
     now = datetime.datetime.now()
     timezone = pytz.timezone("Europe/Berlin")
     right_time = pytz.utc.localize(now, is_dst=None).astimezone(timezone)
-    mail_massage = "Hallo Samuel,\n\nEs gibt ein Problem bei der Präsentation-Webseite von der Stadtmission Grünstadt.\n\n'" + error_message + "'\n\nAusgelöst von: " + str(username) + "\n\nProblem aufgetreten am: " + right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr") + "\n\nViele Grüße\nAdmin"
+    mail_massage = "Hallo Samuel,\n\nEs gibt ein Problem bei der Präsentation-Webseite von der Stadtmission Grünstadt.\n\n" + "filename:  " + traceback_details['filename'] + "\nlinenumber:  " + traceback_details['lineno'] + "\nname:  " + traceback_details['name'] + "\ntype:  " + traceback_details['type'] + "\nmessage:  " + traceback_details['message'] + "\n\nAusgelöst von: " + str(username) + "\n\nProblem aufgetreten am: " + right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr") + "\n\nViele Grüße\nAdmin"
     subject = "Problem bei der Präsentation-Webseite"
     send_mail(name_error_reciever, email_error_receiver, mail_massage, subject)
