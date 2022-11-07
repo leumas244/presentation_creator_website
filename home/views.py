@@ -108,6 +108,10 @@ def profile_settings(request):
                     users.email = request.POST.get('email')
                     users.save()
 
+                if request.POST.get('countdown_file_path') != '':
+                    add_user_info.countdown_file_path = request.POST.get('countdown_file_path')
+                    add_user_info.save()
+
                 messages.success(request, 'Du hast erfolgreich deine Einstellungen geaendert!')
             except:
                 messages.error(request, 'Deine Einstellungen konnten nicht geaendert werden!')
