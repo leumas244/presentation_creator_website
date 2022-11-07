@@ -183,10 +183,14 @@ def fuzzy_pattern(songs, title):
     if hunderter_founds != []:
         return hunderter_founds
     elif border_founds != []:
+        border_founds.sort(reverse=True, key=get_first_element_of_list)
         return border_founds
     else:
+        selection_founds.sort(reverse=True, key=get_first_element_of_list)
         return selection_founds
 
+def get_first_element_of_list(list):
+    return list[0]
     
 def result_decider(fuzzy_matches, own_matches):
     if len(own_matches) == 0:
