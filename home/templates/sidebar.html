@@ -81,6 +81,14 @@
                         Admin-Einstellungen
                     </a>
                 </li>
+                <li>
+                    {% url 'add_user' as the_url %}
+                    {% if request.path == the_url %}
+                    <a class="active" href="{% url 'add_user' %}"><span class="icon setting" aria-hidden="true"></span>Neuer User</a>
+                    {% else %}
+                    <a href="{% url 'add_user' %}"><span class="icon setting" aria-hidden="true"></span>Neuer User</a>
+                    {% endif %}
+                </li>
             </ul>
             {% endif %}
         </div>

@@ -176,6 +176,40 @@ def agenda_by_identifier(request, identifier):
     else:
         return redirect('login')
 
+    
+def add_user(request):
+    if request.user.is_authenticated:
+        user = request.user
+        add_user_info = AdditionalUserInfo.objects.get(user=user)
+        dates = {'add_user_info': add_user_info,}
+        if request.method == 'POST':
+            try:
+                first_name = request.POST.get('firstname')
+                last_name = request.POST.get('lastname')
+                password = request.POST.get('password')
+                username = request.POST.get('username')
+                email = request.POST.get('email')
+                new_user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
+                new_user.save()
+
+                # new_user = User.objects.get(username=username)
+                countdown_file_path = request.POST.get('countdown_file_path')
+                gender = request.POST.get('gender')
+                new_additional_user_info = AdditionalUserInfo(user=new_user, countdown_file_path=countdown_file_path, gender=gender)
+                new_additional_user_info.save()
+
+                messages.success(request, f'Du hast erfolgreich den user "{username}" hinzugefuegt!')
+            except:
+                messages.error(request, 'Deine Einstellungen konnten nicht geaendert werden!')
+
+            # Seite neuladen
+            return redirect('home')
+        else:
+            return render(request, 'sites/add_user.html', dates)
+
+    else:
+        return redirect('login')
+
 
 def base(request):
     if request.user.is_authenticated:

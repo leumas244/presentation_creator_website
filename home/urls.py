@@ -10,5 +10,6 @@ urlpatterns = [
     path('Passwort-aendern/', views.password_change, name="change_password"),
     path('Einstellungen/', views.profile_settings, name='profile_settings'),
     path('Agenda/<int:identifier>/', views.agenda_by_identifier, name='agenda_by_identifier'),
+    path('add_user/', views.add_user, name='add_user'),
     path('base/', views.base, name='base'),
 ]
