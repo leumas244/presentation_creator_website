@@ -14,6 +14,7 @@ class WeekMotto(models.Model):
     motto_short = models.CharField('Wochenspruch kurz', blank=False, null=True, default='', max_length=100)
     motto_long = models.CharField('Wochenspruch Lang', blank=True, null=True, default='', max_length=200)
     motto_api = models.CharField('Wochenspruch API', blank=True, null=True, default='', max_length=200)
+    motto_luther_modern = models.TextField('Wochenspruch Luther', blank=True, null=True, default='')
     update_date = models.DateTimeField('Geändert', auto_now=True)
     creation_date = models.DateTimeField('Erstellt', auto_now_add=True)
 

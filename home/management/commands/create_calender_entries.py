@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Create automatically calender entries with bible passages'
 
     def handle(self, *args, **options):
-        source_file = open('home/churchtools_connection_package/data/jahr_2021-2022.html')
+        source_file = open('home/churchtools_connection_package/data/jahr_2024-2025.html')
         soup = BeautifulSoup(source_file, features="html.parser")
         source_file.close()
 
@@ -29,11 +29,23 @@ class Command(BaseCommand):
             motto_long = ''
             motto_api = ''
 
+            if title == '2. Sonntag nach Trinitatis':
+                motto_short = 'Mt 11, 28'
+            if title == '4. Sonntag nach Trinitatis':
+                motto_short = 'Gal 6, 2'
+            if 'Gedenktag der Enthauptung' in title:
+                motto_short = 'Ps 116, 15'
+            if 'Tag der unschuldigen Kinder' in title:
+                motto_short = 'Ps 116, 15'
+            if '3. Sonntag im Advent (Gaudete)' in title:
+                motto_short = 'Jes 40, 3'
+
+            
             week_motto = WeekMotto(title=title, date=date, gospels=gospels, epistle=epistle,
                                    old_testament=old_testament, lecture=lecture, motto_short=motto_short,
                                    motto_long=motto_long, motto_api=motto_api)
             week_motto.save()
-
+            
             counter = rows.index(row)
             percent = round((counter/row_count)*100, 1)
             print('[' + str(percent) + '%]  ' + title)

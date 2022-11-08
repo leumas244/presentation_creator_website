@@ -14,6 +14,7 @@ class AdminWeekMotto(admin.ModelAdmin):
                     'motto_short',
                     'motto_long',
                     'motto_api',
+                    'motto_luther_modern',
                     'update_date',
                     'creation_date',
                     ]

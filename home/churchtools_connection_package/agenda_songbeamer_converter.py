@@ -1,6 +1,7 @@
 #import imp
 from fuzzywuzzy import fuzz
 import os
+import re
 
 from .churchtoos_api_conection import get_agenda_by_event_id, get_right_time
 from .churchtools_settings import fuzzy_border
@@ -49,9 +50,13 @@ def get_all_necessary_agenda_information(agenda_id):
         }
         if item["note"]:
             if "\n-" in item["note"]:
-                item_data["note"] = item["note"].split("\n-")
+                note = item["note"]
+                note = re.sub(r'^- ', '', note)
+                item_data["note"] = note.split('\n-')
             else:
-                item_data["note"] = [item["note"]]
+                note = item["note"]
+                note = re.sub(r'^- ', '', note)
+                item_data["note"] = [note]
 
         responsible = item["responsible"]["text"]
         for person in item["responsible"]["persons"]:
