@@ -105,24 +105,22 @@
       </div>
     </div>
       <div class="col-lg-3">
-        <article class="side-block-item" style="margin-top: 48px">
+        <button type="submit" class="download-btn" name="download_songbeamer_file" value="{{ id }}" style="margin-top: 48px">
           <div class="side-block-icon primary">
             <i data-feather="download" aria-hidden="true"></i>
           </div>
           <div class="side-block-info">
             <p class="side-block-info__num">Songbeamer-Datei</p>
-            <button type="submit" class="transparent-btn" name="download_songbeamer_file" value="{{ id }}">Download</button>
           </div>
-        </article>
-        <article class="side-block-item">
+        </button>
+        <button type="submit" class="download-btn" name="download_presentation_file" value="{{ id }}">
           <div class="stat-cards-icon warning">
             <i data-feather="file" aria-hidden="true"></i>
           </div>
-          <div class="stat-cards-info">
-            <p class="stat-cards-info__num">Präsentation</p>
-            <button type="submit" class="transparent-btn" name="download_presentation_file" value="{{ id }}">Download</button>
+          <div class="side-block-info">
+            <p class="side-block-info__num">Präsentation</p>
           </div>
-        </article>
+        </button>
       </div>
   </div>
 </form>

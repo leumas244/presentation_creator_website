@@ -1073,10 +1073,38 @@ h3 {
 
 .main-title {
     font-weight: 700;
-    font-size: 24px;
+    font-size: 30px;
     line-height: 1.42;
     color: #171717;
     margin-bottom: 20px
+}
+
+.download-btn {
+    padding: 24px 19px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 15px 50px rgba(160, 163, 189, .1);
+    box-shadow: 0 15px 50px rgba(160, 163, 189, .1);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.download-btn:hover { 
+    transform: scale(1.05); 
+    }
+
+.darkmode .download-btn {
+    background-color: #222235;
+    -webkit-box-shadow: none;
+    box-shadow: none
 }
 
 button {
@@ -1560,9 +1588,15 @@ input[type=checkbox] {
 }
 
 input[type=radio] {
-    width: 24px;
-    height: 24px;
-    margin-right: 19px
+    width: 17px;
+    height: 17px;
+    margin-right: 10px;
+    margin-bottom: 2px;
+}
+
+.darkmode
+input[type=radio] {
+    background-color: #2e303c;
 }
 
 input[type=radio]:focus {
@@ -1738,7 +1772,7 @@ label {
 }
 
 .users-table .song:hover {
-    background-color: #ffa75a;
+    background-color: #ffdec1;
 }
 
 .darkmode .users-table .song {
@@ -1746,7 +1780,7 @@ label {
 }
 
 .darkmode .users-table .song:hover {
-    background-color: #cc6000;
+    background-color: #a86d39;
 }
 
 .users-table tbody tr:last-child .users-item-dropdown {
