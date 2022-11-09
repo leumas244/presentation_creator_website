@@ -3,7 +3,7 @@ import requests
 import datetime
 import pytz
 
-from .churchtools_settings import login_token, base_url, run_mode, test_data, serviceId_leitung, serviceId_predigt, \
+from .settings import login_token, base_url, run_mode, test_data, serviceId_leitung, serviceId_predigt, \
     serviceId_presentation
 
 

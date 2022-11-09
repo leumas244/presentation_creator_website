@@ -4,7 +4,7 @@ import os
 import re
 
 from .churchtoos_api_conection import get_agenda_by_event_id, get_right_time
-from .churchtools_settings import fuzzy_border
+from .settings import fuzzy_border
 from .songbeamer_file_creator import add_item_countdown, add_item_header, add_item_normal, add_item_song, add_item_state, add_item_vaterunser, create_a_new_songbeamer_file
 from .powerpoint_creator import create_pp_file, set_weekvers_in_pp_by_placeholder, set_informations_in_pp_by_placeholder
 

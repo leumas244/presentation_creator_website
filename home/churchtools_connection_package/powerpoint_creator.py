@@ -3,7 +3,7 @@ import datetime
 from shutil import copyfile
 import re
 
-from .churchtools_settings import powerpoint_vorlage
+from .settings import powerpoint_vorlage
 
 from home.models import WeekMotto
 
