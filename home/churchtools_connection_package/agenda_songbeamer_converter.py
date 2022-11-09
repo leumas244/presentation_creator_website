@@ -279,11 +279,16 @@ def create_presentation_file(id_number, user):
 
     set_weekvers_in_pp_by_placeholder(powerpoint_file, agenda)
 
+    information_found = False
     for item in agenda['data']['items']:
         if item['type'] == 'normal':
             if not item['isBeforeEvent']:
                 if 'Informationen' in item['title']:
                     set_informations_in_pp_by_placeholder(powerpoint_file, item['note'])
+                    information_found = True
+    
+    if not information_found:
+        set_informations_in_pp_by_placeholder(powerpoint_file, None)
         
     try:
         agenda = Agenda.objects.get(church_tools_id=id_number)

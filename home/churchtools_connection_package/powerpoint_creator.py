@@ -41,13 +41,16 @@ def get_weekvers_from_agenda(agenda_dictionary):
 
 
 def set_informations_in_pp_by_placeholder(pp_filename, informations):
-    if not informations is None or informations != '':
-        if "\n-" in informations:
-            informations = re.sub(r'^- ', '', informations)
-            informations_list = informations.split('\n-')
+    if not informations is None:
+        if informations != '':
+            if "\n-" in informations:
+                informations = re.sub(r'^- ', '', informations)
+                informations_list = informations.split('\n-')
+            else:
+                informations = re.sub(r'^- ', '', informations)
+                informations_list = [informations]
         else:
-            informations = re.sub(r'^- ', '', informations)
-            informations_list = [informations]
+            informations_list = ["Noch keine Informationen vorhanden!!"]
     else:
         informations_list = ["Noch keine Informationen vorhanden!!"]
 
