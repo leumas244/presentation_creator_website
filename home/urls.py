@@ -11,5 +11,6 @@ urlpatterns = [
     path('Einstellungen/', views.profile_settings, name='profile_settings'),
     path('Agenda/<int:identifier>/', views.agenda_by_identifier, name='agenda_by_identifier'),
     path('add_user/', views.add_user, name='add_user'),
+    path('admin_settings/', views.admin_settings, name='admin_settings'),
     path('base/', views.base, name='base'),
 ]

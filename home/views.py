@@ -10,7 +10,7 @@ from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.contrib.auth import update_session_auth_hash
 from django.conf import settings
 from django.http import HttpResponse
-from .models import AdditionalUserInfo
+from .models import AdditionalUserInfo, AdminSetting
 
 from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
 from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information, create_songbeamer_file, create_presentation_file
@@ -178,7 +178,7 @@ def agenda_by_identifier(request, identifier):
 
     
 def add_user(request):
-    if request.user.is_authenticated:
+    if request.user.username == 'samuel' or request.user.username == 'admin':
         user = request.user
         add_user_info = AdditionalUserInfo.objects.get(user=user)
         dates = {'add_user_info': add_user_info,}
@@ -192,7 +192,6 @@ def add_user(request):
                 new_user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
                 new_user.save()
 
-                # new_user = User.objects.get(username=username)
                 countdown_file_path = request.POST.get('countdown_file_path')
                 gender = request.POST.get('gender')
                 new_additional_user_info = AdditionalUserInfo(user=new_user, countdown_file_path=countdown_file_path, gender=gender)
@@ -206,6 +205,54 @@ def add_user(request):
             return redirect('home')
         else:
             return render(request, 'sites/add_user.html', dates)
+
+    else:
+        return redirect('login')
+
+
+def admin_settings(request):
+    if request.user.username == 'samuel' or request.user.username == 'admin':
+        user = request.user
+        add_user_info = AdditionalUserInfo.objects.get(user=user)
+        admin_setting = AdminSetting.objects.get(id=1)
+        dates = {'add_user_info': add_user_info,
+                 'admin_setting': admin_setting,
+                 }
+        if request.method == 'POST':
+            try:
+                if request.POST.get('song_folder') != '':
+                    admin_setting.song_folder = request.POST.get('song_folder')
+                    admin_setting.save()
+                if request.POST.get('powerpoin_vorlage') != '':
+                    admin_setting.powerpoin_vorlage = request.POST.get('powerpoin_vorlage')
+                    admin_setting.save()
+                if request.POST.get('base_url') != '':
+                    admin_setting.base_url = request.POST.get('base_url')
+                    admin_setting.save()
+                if request.POST.get('login_token') != '':
+                    admin_setting.login_token = request.POST.get('login_token')
+                    admin_setting.save()
+                if request.POST.get('email_user_name') != '':
+                    admin_setting.email_user_name = request.POST.get('email_user_name')
+                    admin_setting.save()
+                if request.POST.get('email_user') != '':
+                    admin_setting.email_user = request.POST.get('email_user')
+                    admin_setting.save()
+                if request.POST.get('name_error_reciever') != '':
+                    admin_setting.name_error_reciever = request.POST.get('name_error_reciever')
+                    admin_setting.save()
+                if request.POST.get('email_error_receiver') != '':
+                    admin_setting.email_error_receiver = request.POST.get('email_error_receiver')
+                    admin_setting.save()
+
+                messages.success(request, 'Du hast erfolgreich die Admin-Einstellungen bearbeitet!')
+            except:
+                messages.error(request, 'Deine Admin-Einstellungen konnten nicht geaendert werden!')
+
+            # Seite neuladen
+            return redirect('home')
+        else:
+            return render(request, 'sites/admin_settings.html', dates)
 
     else:
         return redirect('login')
