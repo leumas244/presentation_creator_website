@@ -59,10 +59,9 @@ def add_item_song(filename, song_path, title):
     else:
         songname = song_path.split('/')
 
-        if len(songname) == 2:
-            title = songname[1].replace('.sng', '')
-        else:
-            title = songname[0].replace('.sng', '')
+        for path_split in songname:
+            if '.sng' in path_split:
+                title = path_split.replace('.sng', '')
 
         title = title.replace("'", "'#39'")
         song_path = song_path.replace("'", "'#39'")

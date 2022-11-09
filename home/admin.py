@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WeekMotto, Song, Agenda, Sended_Email, AdminSetting, AdditionalUserInfo, RenderdSongbeamerFile
+from .models import WeekMotto, Song, Agenda, Sended_Email, AdminSetting, AdditionalUserInfo, RenderdSongbeamerFile, RenderdPowerpointFile
 
 
 # Register your models here.
@@ -87,6 +87,14 @@ class AdminRenderdSongbeamerFile(admin.ModelAdmin):
                     ]
 
 
+class AdminRenderdPowerpointFile(admin.ModelAdmin):
+    list_display = ['id',
+                    'agenda',
+                    'user',
+                    'update_date',
+                    'creation_date',
+                    ]
+
 admin.site.register(WeekMotto, AdminWeekMotto)
 admin.site.register(Song, AdminSong)
 admin.site.register(Agenda, AdminAgenda)
@@ -94,3 +102,4 @@ admin.site.register(Sended_Email, AdminSended_Email)
 admin.site.register(AdminSetting, AdminAdminSetting)
 admin.site.register(AdditionalUserInfo, AdminAdditionalUserInfo)
 admin.site.register(RenderdSongbeamerFile, AdminRenderdSongbeamerFile)
+admin.site.register(RenderdPowerpointFile, AdminRenderdPowerpointFile)

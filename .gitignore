@@ -6,3 +6,5 @@
 *.ics
 /.vscode
 *.col
+
+home/churchtools_connection_package/Gottesdienste/*

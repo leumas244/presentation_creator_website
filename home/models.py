@@ -162,3 +162,15 @@ class RenderdSongbeamerFile(models.Model):
 
     class Meta:
         verbose_name_plural = "RenderdSongbeamerFiles"
+
+
+class RenderdPowerpointFile(models.Model):
+    id = models.AutoField(primary_key=True)
+    agenda = models.ForeignKey('Agenda', on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
+    update_date = models.DateTimeField('Geändert', auto_now=True)
+    creation_date = models.DateTimeField('Erstellt', auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "RenderdPowerpointFiles"

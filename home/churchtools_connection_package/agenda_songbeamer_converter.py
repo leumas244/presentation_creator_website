@@ -6,7 +6,9 @@ import re
 from .churchtoos_api_conection import get_agenda_by_event_id, get_right_time
 from .churchtools_settings import fuzzy_border
 from .songbeamer_file_creator import add_item_countdown, add_item_header, add_item_normal, add_item_song, add_item_state, add_item_vaterunser, create_a_new_songbeamer_file
-from home.models import Song, AdditionalUserInfo, RenderdSongbeamerFile, Agenda
+from .powerpoint_creator import create_pp_file, set_weekvers_in_pp_by_placeholder, set_informations_in_pp_by_placeholder
+
+from home.models import Song, AdditionalUserInfo, RenderdSongbeamerFile, Agenda, RenderdPowerpointFile
 
 
 def get_event_date_from_agenda(agenda_dictionary):
@@ -32,6 +34,16 @@ def initial_a_new_songbeamer_file(agenda_dictionary):
     col_filename = create_a_new_songbeamer_file(event_name, event_folder)
 
     return col_filename
+
+
+def initial_a_new_powerpoint_file(agenda_dictionary):
+    event_name = get_event_name(agenda_dictionary)
+    event_folder_path = f'./home/churchtools_connection_package/Gottesdienste/{event_name}' 
+    event_folder = create_event_folder(event_folder_path) + '/'
+
+    powerpoint_filename = create_pp_file(event_name, event_folder)
+
+    return powerpoint_filename
 
 
 def get_all_necessary_agenda_information(agenda_id):
@@ -260,8 +272,27 @@ def create_songbeamer_file(id_number, user, songs):
     return songbeamer_file
 
 
-def create_presentation_file(id, user):
-    pass
+def create_presentation_file(id_number, user):
+    agenda = get_agenda_by_event_id(id_number)
+
+    powerpoint_file = initial_a_new_powerpoint_file(agenda)
+
+    set_weekvers_in_pp_by_placeholder(powerpoint_file, agenda)
+
+    for item in agenda['data']['items']:
+        if item['type'] == 'normal':
+            if not item['isBeforeEvent']:
+                if 'Informationen' in item['title']:
+                    set_informations_in_pp_by_placeholder(powerpoint_file, item['note'])
+        
+    try:
+        agenda = Agenda.objects.get(church_tools_id=id_number)
+        new_dataset = RenderdPowerpointFile(user=user, agenda=agenda)
+    except:
+        new_dataset = RenderdPowerpointFile(user=user)
+    new_dataset.save()
+
+    return powerpoint_file
 """
 def create_presentation(id_number, countdown_path):
     datas = get_agenda_by_event_id(id_number)
