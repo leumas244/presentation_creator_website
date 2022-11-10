@@ -41,3 +41,13 @@ def send_exeption_mail(traceback_details, username):
     mail_massage = "Hallo Samuel,\n\nEs gibt ein Problem bei der Präsentation-Webseite von der Stadtmission Grünstadt.\n\n" + "filename:  " + traceback_details['filename'] + "\nlinenumber:  " + traceback_details['lineno'] + "\nname:  " + traceback_details['name'] + "\ntype:  " + traceback_details['type'] + "\nmessage:  " + traceback_details['message'] + "\n\nAusgelöst von: " + str(username) + "\n\nProblem aufgetreten am: " + right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr") + "\n\nViele Grüße\nAdmin"
     subject = "Problem bei der Präsentation-Webseite"
     send_mail(admin_settings.name_error_reciever, admin_settings.email_error_receiver, mail_massage, subject)
+
+
+def send_exeption_mail_by_automatic_script(traceback_details):
+    admin_settings = AdminSetting.objects.get(id=1)
+    now = datetime.datetime.now()
+    timezone = pytz.timezone("Europe/Berlin")
+    right_time = pytz.utc.localize(now, is_dst=None).astimezone(timezone)
+    mail_massage = "Hallo Samuel,\n\nEs gibt ein Problem beim Ausführen eines automatischen Skriptes bei der Präsentation-Webseite von der Stadtmission Grünstadt.\n\n" + "filename:  " + traceback_details['filename'] + "\nlinenumber:  " + traceback_details['lineno'] + "\nname:  " + traceback_details['name'] + "\ntype:  " + traceback_details['type'] + "\nmessage:  " + traceback_details['message'] + "\n\nProblem aufgetreten am: " + right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr") + "\n\nViele Grüße\nAdmin"
+    subject = "Problem beim Ausführen eines automatischen Skriptes"
+    send_mail(admin_settings.name_error_reciever, admin_settings.email_error_receiver, mail_massage, subject)
