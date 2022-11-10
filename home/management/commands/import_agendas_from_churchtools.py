@@ -32,6 +32,7 @@ class Command(BaseCommand):
             exit()
         
         self.print_info('ENDING IMPORTING_AGENDA_FROM_CHURCHTOOLS')
+        print()
 
 
     def print_info(self, info):
