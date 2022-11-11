@@ -72,6 +72,9 @@ class AdminAdditionalUserInfo(admin.ModelAdmin):
                     'user',
                     'countdown_file_path',
                     'gender',
+                    'one_time_token',
+                    'token_expiry_date',
+                    'has_loged_in',
                     'update_date',
                     'creation_date',
                     ]

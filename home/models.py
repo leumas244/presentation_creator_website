@@ -135,6 +135,10 @@ class AdditionalUserInfo(models.Model):
     countdown_file_path = models.CharField('Countdown Pfad', blank=True, null=True, default='', max_length=1000)
     gender = models.CharField('Geschlecht', blank=False, null=False, max_length=20)
 
+    one_time_token = models.CharField('Einmal-Token', blank=True, null=True, max_length=256)
+    token_expiry_date = models.DateTimeField('Token Ablauf Datum', blank=True, null=True)
+    has_loged_in = models.BooleanField('War eingeloggt?', default=False)
+
     update_date = models.DateTimeField('Geändert', auto_now=True)
     creation_date = models.DateTimeField('Erstellt', auto_now_add=True)
 

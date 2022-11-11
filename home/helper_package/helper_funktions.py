@@ -5,6 +5,7 @@ import datetime
 import pytz
 
 from home.models import Sended_Email, AdminSetting
+from django.urls import reverse
 
 
 def send_mail(receiver_name, receiver_mail, message, subject):
@@ -51,3 +52,11 @@ def send_exeption_mail_by_automatic_script(traceback_details):
     mail_massage = "Hallo Samuel,\n\nEs gibt ein Problem beim Ausführen eines automatischen Skriptes bei der Präsentation-Webseite von der Stadtmission Grünstadt.\n\n" + "filename:  " + traceback_details['filename'] + "\nlinenumber:  " + traceback_details['lineno'] + "\nname:  " + traceback_details['name'] + "\ntype:  " + traceback_details['type'] + "\nmessage:  " + traceback_details['message'] + "\n\nProblem aufgetreten am: " + right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr") + "\n\nViele Grüße\nAdmin"
     subject = "Problem beim Ausführen eines automatischen Skriptes"
     send_mail(admin_settings.name_error_reciever, admin_settings.email_error_receiver, mail_massage, subject)
+
+
+def send_invation_mail(username, first_name, last_name, email, token):
+    login_link = 'http://127.0.0.1:8000' + reverse('login_with_token', args=[token])
+    full_name = f'{first_name} {last_name}'
+    subject = f'Einladung zur Stadtmission Grünstadt Präsentations-Webseite'
+    mail_massage = f'Hallo {first_name},\n\ndu wurdest für die Präsentations-Webseite der Stadtmission Grünstadt registriert. In dieser Mail erhälst du ein Einladungslink zum erstellen deines Passwortes.\nDein Username ist: "{username}"\nEinladungslink: {login_link}\nDieser Link ist eine Woche gültig!\n\nViele Grüße\ndein Admin'
+    send_mail(full_name, email, mail_massage, subject)
