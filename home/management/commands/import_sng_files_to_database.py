@@ -261,7 +261,7 @@ class Command(BaseCommand):
 
     def get_dictionary_of_keywords(self, file_path):
         dictionary_of_keywords = {}
-        file_opener = open(file_path, 'r')
+        file_opener = open(file_path, 'r', encoding='utf-8')
         file_content = file_opener.read()
         keyword_data = file_content.split('---')[0]
         file_opener.close()
