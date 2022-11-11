@@ -1,5 +1,8 @@
 from home.models import AdminSetting
-admin_setting = AdminSetting.objects.get(id=1)
+try:
+    admin_setting = AdminSetting.objects.get(id=1)
+except:
+    admin_setting = None
 # mode can be production/testing. In testing mode the test_data have to be filled
 run_mode = 'run'
 test_data = [{'id': 629, 'name': 'Verbandsgottesdienst', 'date': '11.09.2022  10:30', 'agenda_state': 'not_found',
@@ -17,18 +20,30 @@ test_data = [{'id': 629, 'name': 'Verbandsgottesdienst', 'date': '11.09.2022  10
               'service_presentation': ''}]
 
 # variable settings
-song_folder = admin_setting.song_folder
+if admin_setting:
+    song_folder = admin_setting.song_folder
+else:
+    song_folder = ''
 
-powerpoint_vorlage = admin_setting.powerpoin_vorlage
+if admin_setting:
+    powerpoint_vorlage = admin_setting.powerpoin_vorlage
+else:
+    powerpoint_vorlage = ''
 
 # church_tools settings
 serviceId_predigt = 1
 serviceId_leitung = 3
 serviceId_presentation = 7
 
-base_url = admin_setting.base_url
+if admin_setting:
+    base_url = admin_setting.base_url
+else:
+    base_url = ''
 
-login_token = admin_setting.login_token
+if admin_setting:
+    login_token = admin_setting.login_token
+else:
+    login_token = ''
 
 fuzzy_border = 90
 

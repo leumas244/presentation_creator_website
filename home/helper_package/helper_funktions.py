@@ -5,7 +5,6 @@ import datetime
 import pytz
 
 from home.models import Sended_Email, AdminSetting
-from django.urls import reverse
 
 
 def send_mail(receiver_name, receiver_mail, message, subject):
