@@ -18,7 +18,7 @@ from .models import AdditionalUserInfo, AdminSetting
 
 from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
 from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information, create_songbeamer_file, create_presentation_file
-from .helper_package.helper_funktions import send_exeption_mail, send_invation_mail
+from .helper_package.helper_funktions import send_exeption_mail, send_invation_mail, send_reset_mail
 
 
 def logout(sender, user, request, **kwargs):
@@ -102,21 +102,20 @@ def profile_settings(request):
         if add_user_info.has_loged_in:
             dates = {'add_user_info': add_user_info,}
             if request.method == 'POST':
-                users = User.objects.get(first_name=request.user.first_name)
                 # Nachnamen aendern und Log eintrag dazu erstellen
                 try:
                     if request.POST.get('firstname') != '':
-                        users.first_name = request.POST.get('firstname')
-                        users.save()
+                        user.first_name = request.POST.get('firstname')
+                        user.save()
 
                     if request.POST.get('lastname') != '':
-                        users.last_name = request.POST.get('lastname')
-                        users.save()
+                        user.last_name = request.POST.get('lastname')
+                        user.save()
 
                     # Email aendern und Log eintrag dazu erstellen
                     if request.POST.get('email') != '':
-                        users.email = request.POST.get('email')
-                        users.save()
+                        user.email = request.POST.get('email')
+                        user.save()
 
                     if request.POST.get('countdown_file_path') != '':
                         add_user_info.countdown_file_path = request.POST.get('countdown_file_path')
@@ -276,6 +275,35 @@ def admin_settings(request):
 
     else:
         return redirect('login')
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        mail_or_username = request.POST.get('username')
+        try:
+            if '@' in mail_or_username:
+                user = User.objects.get(email=mail_or_username)
+            else:
+                user = User.objects.get(username=mail_or_username)
+
+            add_user_info = AdditionalUserInfo.objects.get(user=user)
+            token = token_generator(size=get_random_size())
+            expiry_date = get_expire_date()
+
+            add_user_info.one_time_token = token
+            add_user_info.token_expiry_date = expiry_date
+            add_user_info.has_loged_in = False
+            add_user_info.save()
+
+            send_reset_mail(user.first_name, user.last_name, user.email, token)
+
+            messages.success(request, 'Dir wurde eine Zurücksetzungs Mail gesendet!')
+            return render(request, 'sites/forgot_password.html')
+        except:
+            messages.error(request, 'Dein Username oder deine Email ist falsch geschrieben oder existiert nicht!')
+            return render(request, 'sites/forgot_password.html')
+
+    return render(request, 'sites/forgot_password.html')
 
 
 def login_with_token(request, token):

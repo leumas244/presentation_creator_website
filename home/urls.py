@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.home, name="home"),
     path('login/', LoginView.as_view(template_name='sites/login.html'), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
+    path('passwort-vergessen/', views.forgot_password, name="forgot_password"),
     path('Passwort-aendern/', views.password_change, name="change_password"),
     path('Einstellungen/', views.profile_settings, name='profile_settings'),
     path('account/<str:token>/', views.login_with_token, name='login_with_token'),

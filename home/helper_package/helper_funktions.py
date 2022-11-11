@@ -60,3 +60,11 @@ def send_invation_mail(username, first_name, last_name, email, token):
     subject = f'Einladung zur Stadtmission Grünstadt Präsentations-Webseite'
     mail_massage = f'Hallo {first_name},\n\ndu wurdest für die Präsentations-Webseite der Stadtmission Grünstadt registriert. In dieser Mail erhälst du ein Einladungslink zum erstellen deines Passwortes.\nDein Username ist: "{username}"\nEinladungslink: {login_link}\nDieser Link ist eine Woche gültig!\n\nViele Grüße\ndein Admin'
     send_mail(full_name, email, mail_massage, subject)
+
+
+def send_reset_mail(first_name, last_name, email, token):
+    login_link = 'http://127.0.0.1:8000' + reverse('login_with_token', args=[token])
+    full_name = f'{first_name} {last_name}'
+    subject = f'Passwort zurücksetzen bei der Stadtmission Grünstadt Präsentations-Webseite'
+    mail_massage = f'Hallo {first_name},\n\ndu hast dein Passwort zurückgesetzt. Unter dem folgendem Link kannst du dein Passwort zurücksetzen\n {login_link}\nDieser Link ist eine Woche gültig!\n\nViele Grüße\ndein Admin'
+    send_mail(full_name, email, mail_massage, subject)
