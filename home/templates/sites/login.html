@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'base/img/svg/logo.svg' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'base/img/svg/beamer.png' %}">
     <!-- Custom styles -->
     <link rel="stylesheet" type="text/css" href="{% static 'base/css/style.min.css' %}">
-    <title>Name | Login</title>
+    <title>Präsentation-Webseite | Login</title>
 </head>
 
 <body>
@@ -39,8 +39,8 @@
                     <button class="form-btn primary-default-btn transparent-btn" type="submit" value="Login">
                         Anmelden
                     </button>
-                    <label class="form-label-wrapper" style="text-align: center; font-size: 13px; margin-top: 5px">
-                        <a href="{% url 'forgot_password' %}">Passwort vergessen?</a>
+                    <label class="form-label-wrapper" style="margin-top: 10px">
+                        <a class="pw-forgot" href="{% url 'forgot_password' %}">Passwort vergessen?</a>
                     </label>
                     {% for message in messages %}
                     <br>

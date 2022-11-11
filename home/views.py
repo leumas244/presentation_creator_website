@@ -14,11 +14,12 @@ from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.conf import settings
 from django.http import HttpResponse
+from django.urls import reverse
 from .models import AdditionalUserInfo, AdminSetting
 
-from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events, get_agenda_by_event_id
+from .churchtools_connection_package.churchtoos_api_conection import get_list_of_events
 from .churchtools_connection_package.agenda_songbeamer_converter import get_all_necessary_agenda_information, create_songbeamer_file, create_presentation_file
-from .helper_package.helper_funktions import send_exeption_mail, send_invation_mail, send_reset_mail
+from .helper_package.helper_funktions import send_exeption_mail, send_invation_mail, send_reset_mail, send_password_forgoten_problem_mail
 
 
 def logout(sender, user, request, **kwargs):
@@ -128,7 +129,7 @@ def profile_settings(request):
                 # Seite neuladen
                 return redirect('home')
             else:
-                return render(request, 'sites/profile_settings.html', dates)           
+                return render(request, 'sites/profile_settings.html', dates)
         else:
             return redirect('first_login')
 
@@ -207,14 +208,14 @@ def add_user(request):
                 new_user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email)
                 new_user.save()
 
-                countdown_file_path = request.POST.get('countdown_file_path')
                 gender = request.POST.get('gender')
                 token = token_generator(size=get_random_size())
                 expiry_date = get_expire_date()
-                new_additional_user_info = AdditionalUserInfo(user=new_user, countdown_file_path=countdown_file_path, gender=gender, one_time_token=token, token_expiry_date=expiry_date)
+                token_link = request.build_absolute_uri(reverse('login_with_token', args=[token]))
+                new_additional_user_info = AdditionalUserInfo(user=new_user, gender=gender, one_time_token=token, token_expiry_date=expiry_date)
                 new_additional_user_info.save()
 
-                send_invation_mail(username, first_name, last_name, email, token)
+                send_invation_mail(username, first_name, last_name, email, token_link)
 
                 messages.success(request, f'Du hast erfolgreich den user "{username}" hinzugefuegt!')
             except:
@@ -282,7 +283,16 @@ def forgot_password(request):
         mail_or_username = request.POST.get('username')
         try:
             if '@' in mail_or_username:
-                user = User.objects.get(email=mail_or_username)
+                users = User.objects.filter(email=mail_or_username)
+                if len(users) > 1:
+                    send_password_forgoten_problem_mail(users, mail_or_username)
+                    messages.error(request, 'Es gab ein Problem mit deiner Email. Der Administrator wurde benachrichtigt. Warte auf eine Nachricht von ihm oder versuch es mit dem Benutzernamen')
+                    return render(request, 'sites/forgot_password.html')
+                elif len(users) == 1:
+                    user = users[0]
+                else:
+                    messages.error(request, 'Dein Username oder deine Email ist falsch geschrieben oder existiert nicht!')
+                    return render(request, 'sites/forgot_password.html')
             else:
                 user = User.objects.get(username=mail_or_username)
 
@@ -295,7 +305,9 @@ def forgot_password(request):
             add_user_info.has_loged_in = False
             add_user_info.save()
 
-            send_reset_mail(user.first_name, user.last_name, user.email, token)
+            token_link = request.build_absolute_uri(reverse('login_with_token', args=[token]))
+
+            send_reset_mail(user.first_name, user.last_name, user.email, token_link)
 
             messages.success(request, 'Dir wurde eine Zurücksetzungs Mail gesendet!')
             return render(request, 'sites/forgot_password.html')

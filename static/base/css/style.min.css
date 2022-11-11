@@ -813,7 +813,8 @@ body {
 }
 
 .logo {
-    background-image: url(../img/svg/Logo.svg);
+    background-image: url(../img/svg/beamer.png);
+    background-size: cover;
     width: 49px;
     height: 49px
 }
@@ -3149,8 +3150,17 @@ label {
     font-weight: bold;
 }
 
+.pw-forgot {
+    text-align: center; 
+    font-size: 13px;
+}
+
 .darkmode {
     background-color: #11111d
+}
+
+.darkmode .pw-forgot {
+    color: #d6d7e3;
 }
 
 .darkmode button.disabled {
