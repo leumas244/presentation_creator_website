@@ -108,7 +108,10 @@ def get_last_agenda_change_date_by_agenda(agenda_dictionary):
 
 def get_last_agenda_change_person_by_agenda(agenda_dictionary):
     person_id = agenda_dictionary['data']['meta']['modifiedPerson']['id']
-    person_name = get_person_name_by_person_id(person_id)
+    if person_id == 6:
+        person_name = ''
+    else:
+        person_name = get_person_name_by_person_id(person_id)
     return person_name
 
 
