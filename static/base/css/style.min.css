@@ -1098,6 +1098,55 @@ h3 {
     flex-wrap: wrap
 }
 
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #f0f2fa;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%; /* Full width */
+    height: auto;
+    max-height: 70%;
+    overflow: auto; /* Enable scroll if needed */
+    border-radius: 5px;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+.modal-btn {
+    color: #0061f7;
+    background-color: transparent;
+    /* width: 12px;
+    height: 12px;*/
+}
+
 .download-btn:hover { 
     transform: scale(1.05); 
     }

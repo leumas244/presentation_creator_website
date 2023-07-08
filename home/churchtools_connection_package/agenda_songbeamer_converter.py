@@ -109,7 +109,9 @@ def song_converter(songs, item):
                     fuzzy_matches_list = fuzzy_pattern(songs, title_without_header)
 
                     end_result = result_decider(fuzzy_matches_list, songs_founded)
-                    return end_result
+
+                    new_end_result = get_new_end_result(end_result)
+                    return new_end_result
         
             else:
                 return [[0, "Problem! Kein 'Lied' in Titel gefunden!"]]
@@ -224,6 +226,21 @@ def result_decider(fuzzy_matches, own_matches):
         return accordance_songs
     else:
         return fuzzy_matches
+    
+
+def get_new_end_result(end_result):
+    new_end_result = []
+    for item in end_result:
+        song = item[1]
+        content = song.content
+        content_list = content.split('---')
+        content_string = ''
+        for list_element in content_list:
+            if not content_list.index(list_element) == 0:
+                content_string = content_string + list_element
+        item.append(content_string)
+        new_end_result.append(item)
+    return new_end_result
 
 
 def create_songbeamer_file(id_number, user, songs):
