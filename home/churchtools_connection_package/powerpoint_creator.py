@@ -38,6 +38,8 @@ def get_weekvers_from_agenda(agenda_dictionary):
     
     for weekmotto in weekmottos:
         return weekmotto.motto_luther_modern
+    
+    return 'kein Vers für dieses Datum gefunden'
 
 
 def set_informations_in_pp_by_placeholder(pp_filename, informations):
