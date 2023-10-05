@@ -84,6 +84,10 @@ def get_all_necessary_agenda_information(agenda_id):
                 item_data["type"] = "song"
                 song = song_converter(songs, item)
                 item_data["song"] = song
+        elif 'musikteam' in responsible.lower():
+            item_data["type"] = "song"
+            song = song_converter_without_colon(songs, item)
+            item_data["song"] = song
 
     data_dic["items"] = items
 
@@ -118,7 +122,18 @@ def song_converter(songs, item):
         
         else:
                 return [[0, "Problem! Kein Doppelpunkt gefunden!"]]
-        
+
+
+def song_converter_without_colon(songs, item):
+    title_without_header = item['title']
+    songs_founded = search_song(songs, title_without_header)
+
+    fuzzy_matches_list = fuzzy_pattern(songs, title_without_header)
+
+    end_result = result_decider(fuzzy_matches_list, songs_founded)
+
+    new_end_result = get_new_end_result(end_result)
+    return new_end_result
 
 
 def search_song(songs, title_without_header):
@@ -256,6 +271,15 @@ def create_songbeamer_file(id_number, user, songs):
     for item in agenda['data']['items']:
         if item['type'] == 'normal':
             if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
+                if counter in songs:
+                    if songs[counter] == 'no_song_set':
+                        add_item_song(songbeamer_file, 'No song set', item['title'])
+                    elif songs[counter] == 'no_file_set':
+                        add_item_song(songbeamer_file, 'No File Found', item['title'])
+                    else:
+                        song = Song.objects.get(id=songs[counter])
+                        add_item_song(songbeamer_file, song.filePath, item['title'])
+            elif 'musikteam' in item["responsible"]["text"].lower():
                 if counter in songs:
                     if songs[counter] == 'no_song_set':
                         add_item_song(songbeamer_file, 'No song set', item['title'])
