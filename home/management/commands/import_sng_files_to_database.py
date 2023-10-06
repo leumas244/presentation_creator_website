@@ -14,6 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.print_info('STARTING IMPORT_SNG_FILES_TO_DATABASE')
+        self.startin_option = 'update_all' #can be default or update_all
         try:
             self.start_routine()
         except Exception as e:
@@ -68,14 +69,21 @@ class Command(BaseCommand):
             if song_file_path in list_of_tracked_song_paths:
                 list_of_tracked_song_paths.remove(song_file_path)
                 current_database_song = Song.objects.get(filePath=song_file_path)
-                database_song_hash = current_database_song.file_md5_hash
-                song_file_path_hash = self.get_md5_hash(songs_path_folder + '/' + song_file_path)
-                if database_song_hash == song_file_path_hash:
-                    counter_not_updated_file += 1
-                else:
+
+                if self.startin_option == 'update_all':
                     id_number = self.update_song(song_file_path, current_database_song, songs_path_folder, used_keywords)
                     if id_number:
                         counter_updated_file += 1
+                else:
+                    database_song_hash = current_database_song.file_md5_hash
+                    song_file_path_hash = self.get_md5_hash(songs_path_folder + '/' + song_file_path)
+                    if database_song_hash == song_file_path_hash:
+                        counter_not_updated_file += 1
+                    else:
+                        id_number = self.update_song(song_file_path, current_database_song, songs_path_folder, used_keywords)
+                        if id_number:
+                            counter_updated_file += 1
+                
             else:
                 id_number = self.track_new_song_file(song_file_path, songs_path_folder, used_keywords)
                 if id_number:
@@ -253,7 +261,7 @@ class Command(BaseCommand):
                                 'message' : str(exc_value),
                                 }
             send_exeption_mail_by_automatic_script(traceback_details)
-            print(f'    Could not create new Song. Because of: {str(e)}')
+            print(f'    Could not create new Song ({file_path}). Because of: {str(e)}')
             id_number = None
 
         return id_number
@@ -263,6 +271,8 @@ class Command(BaseCommand):
         dictionary_of_keywords = {}
         file_opener = open(file_path, 'r', encoding='ISO-8859-1')
         file_content = file_opener.read()
+        if 'ï»¿' in file_content:
+            file_content = file_content.replace('ï»¿', '')
         keyword_data = file_content.split('---')[0]
         file_opener.close()
 
