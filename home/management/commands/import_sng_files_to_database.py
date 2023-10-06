@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.print_info('STARTING IMPORT_SNG_FILES_TO_DATABASE')
-        self.startin_option = 'update_all' #can be default or update_all
+        self.startin_option = 'default' #can be default or update_all
         try:
             self.start_routine()
         except Exception as e:
