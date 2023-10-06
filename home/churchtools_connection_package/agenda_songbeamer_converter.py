@@ -83,10 +83,9 @@ def get_all_necessary_agenda_information(agenda_id):
             if not 'Predigt:' in item['title']:
                 if not ('Predigt' in item['title'] and 'Gebet' in item['title']):
                     if not ('Ankündigung' in item['title']):
-                        if ":" in item['title']:
-                            item_data["type"] = "song"
-                            song = song_converter(songs, item)
-                            item_data["song"] = song
+                        item_data["type"] = "song"
+                        song = song_converter(songs, item)
+                        item_data["song"] = song
         elif 'musikteam' in item["responsible"]["text"].lower():
             if not item['title'] == 'Gebet':
                 if not ('Gebet' in item['title'] and ':' in item['title']):
