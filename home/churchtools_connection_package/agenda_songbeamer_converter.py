@@ -80,14 +80,19 @@ def get_all_necessary_agenda_information(agenda_id):
         items.append(item_data)
 
         if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
-            if ":" in item['title']:
-                item_data["type"] = "song"
-                song = song_converter(songs, item)
-                item_data["song"] = song
-        elif 'musikteam' in responsible.lower():
-            item_data["type"] = "song"
-            song = song_converter_without_colon(songs, item)
-            item_data["song"] = song
+            if not 'Predigt:' in item['title']:
+                if not ('Predigt' in item['title'] and 'Gebet' in item['title']):
+                    if not ('Ankündigung' in item['title']):
+                        if ":" in item['title']:
+                            item_data["type"] = "song"
+                            song = song_converter(songs, item)
+                            item_data["song"] = song
+        elif 'musikteam' in item["responsible"]["text"].lower():
+            if not item['title'] == 'Gebet':
+                if not ('Gebet' in item['title'] and ':' in item['title']):
+                    item_data["type"] = "song"
+                    song = song_converter_without_colon(songs, item)
+                    item_data["song"] = song
 
     data_dic["items"] = items
 
@@ -271,23 +276,28 @@ def create_songbeamer_file(id_number, user, songs):
     for item in agenda['data']['items']:
         if item['type'] == 'normal':
             if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
-                if counter in songs:
-                    if songs[counter] == 'no_song_set':
-                        add_item_song(songbeamer_file, 'No song set', item['title'])
-                    elif songs[counter] == 'no_file_set':
-                        add_item_song(songbeamer_file, 'No File Found', item['title'])
-                    else:
-                        song = Song.objects.get(id=songs[counter])
-                        add_item_song(songbeamer_file, song.filePath, item['title'])
+                if not 'Predigt:' in item['title']:
+                    if not ('Predigt' in item['title'] and 'Gebet' in item['title']):
+                        if not ('Ankündigung' in item['title']):
+                            if counter in songs:
+                                if songs[counter] == 'no_song_set':
+                                    add_item_song(songbeamer_file, 'No song set', item['title'])
+                                elif songs[counter] == 'no_file_set':
+                                    add_item_song(songbeamer_file, 'No File Found', item['title'])
+                                else:
+                                    song = Song.objects.get(id=songs[counter])
+                                    add_item_song(songbeamer_file, song.filePath, item['title'])
             elif 'musikteam' in item["responsible"]["text"].lower():
-                if counter in songs:
-                    if songs[counter] == 'no_song_set':
-                        add_item_song(songbeamer_file, 'No song set', item['title'])
-                    elif songs[counter] == 'no_file_set':
-                        add_item_song(songbeamer_file, 'No File Found', item['title'])
-                    else:
-                        song = Song.objects.get(id=songs[counter])
-                        add_item_song(songbeamer_file, song.filePath, item['title'])
+                if not item['title'] == 'Gebet':
+                    if not ('Gebet' in item['title'] and ':' in item['title']):
+                        if counter in songs:
+                            if songs[counter] == 'no_song_set':
+                                add_item_song(songbeamer_file, 'No song set', item['title'])
+                            elif songs[counter] == 'no_file_set':
+                                add_item_song(songbeamer_file, 'No File Found', item['title'])
+                            else:
+                                song = Song.objects.get(id=songs[counter])
+                                add_item_song(songbeamer_file, song.filePath, item['title'])
             elif 'Countdown' in item['title']:
                 add_item_countdown(songbeamer_file, countdown_path)
             elif 'Vaterunser' in item['title']:
