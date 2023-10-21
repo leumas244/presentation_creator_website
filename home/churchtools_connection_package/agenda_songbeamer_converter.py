@@ -82,7 +82,7 @@ def get_all_necessary_agenda_information(agenda_id):
         if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
             if not 'Predigt:' in item['title']:
                 if not ('Predigt' in item['title'] and 'Gebet' in item['title']):
-                    if not ('Ankündigung' in item['title']):
+                    if not ('Ankündigung' in item['title'] or 'Mitglied' in item['title']):
                         item_data["type"] = "song"
                         song = song_converter(songs, item)
                         item_data["song"] = song
@@ -277,7 +277,7 @@ def create_songbeamer_file(id_number, user, songs):
             if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
                 if not 'Predigt:' in item['title']:
                     if not ('Predigt' in item['title'] and 'Gebet' in item['title']):
-                        if not ('Ankündigung' in item['title']):
+                        if not ('Ankündigung' in item['title'] or 'Mitglied' in item['title']):
                             if counter in songs:
                                 if songs[counter] == 'no_song_set':
                                     add_item_song(songbeamer_file, 'No song set', item['title'])

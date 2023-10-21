@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.print_info('STARTING IMPORT_SNG_FILES_TO_DATABASE')
-        self.startin_option = 'default' #can be default or update_all
+        self.startin_option = 'update_all' # can be default or update_all
         try:
             self.start_routine()
         except Exception as e:
@@ -216,6 +216,14 @@ class Command(BaseCommand):
 
             current_database_song.file_md5_hash = md5_hash
             current_database_song.content = content
+
+            for keyword in used_keywords:
+                saved_attribute = getattr(current_database_song, keyword)
+                if saved_attribute:
+                    if keyword != 'title':
+                        if not keyword in keywords:
+                            setattr(current_database_song, keyword, None)
+            
             current_database_song.save()
             id_number = current_database_song.id
 
@@ -269,12 +277,15 @@ class Command(BaseCommand):
 
     def get_dictionary_of_keywords(self, file_path):
         dictionary_of_keywords = {}
-        file_opener = open(file_path, 'r', encoding='ISO-8859-1')
-        file_content = file_opener.read()
-        if 'ï»¿' in file_content:
-            file_content = file_content.replace('ï»¿', '')
+        with open(file_path, 'r', encoding='ISO-8859-2') as file:
+            file_content = file.read()
+
+        if 'ďťż' in file_content:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                file_content = file.read()
+            file_content = file_content.replace('\ufeff', '')
+
         keyword_data = file_content.split('---')[0]
-        file_opener.close()
 
         keyword_data = keyword_data.split('\n')
         for line in keyword_data:
