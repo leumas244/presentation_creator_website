@@ -37,16 +37,14 @@
           </a>
           <ul class="cat-sub-menu visible">
             <li>
-              {% url 'profile_settings' as the_url %} {% if request.path ==
-              the_url %}
+              {% url 'profile_settings' as the_url %} {% if request.path == the_url %}
               <a class="active" href="{% url 'profile_settings' %}">Profil</a>
               {% else %}
               <a href="{% url 'profile_settings' %}">Profil</a>
               {% endif %}
             </li>
             <li>
-              {% url 'change_password' as the_url %} {% if request.path ==
-              the_url %}
+              {% url 'change_password' as the_url %} {% if request.path == the_url %}
               <a class="active" href="{% url 'change_password' %}"
                 >Passwort ändern</a
               >
