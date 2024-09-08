@@ -28,7 +28,7 @@ def create_event_folder(event_folder_path):
 
 def initial_a_new_songbeamer_file(agenda_dictionary):
     event_name = get_event_name(agenda_dictionary)
-    event_folder_path = f'./home/churchtools_connection_package/Gottesdienste/{event_name}' 
+    event_folder_path = f'./data/Gottesdienste/{event_name}' 
     event_folder = create_event_folder(event_folder_path) + '/'
 
     col_filename = create_a_new_songbeamer_file(event_name, event_folder)
@@ -38,7 +38,7 @@ def initial_a_new_songbeamer_file(agenda_dictionary):
 
 def initial_a_new_powerpoint_file(agenda_dictionary):
     event_name = get_event_name(agenda_dictionary)
-    event_folder_path = f'./home/churchtools_connection_package/Gottesdienste/{event_name}' 
+    event_folder_path = f'./data/Gottesdienste/{event_name}' 
     event_folder = create_event_folder(event_folder_path) + '/'
 
     powerpoint_filename = create_pp_file(event_name, event_folder)

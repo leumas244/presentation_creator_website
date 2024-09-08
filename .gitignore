@@ -1,4 +1,5 @@
 /.idea
+/.venv
 
 /db.sqlite3
 *.pyc
@@ -7,4 +8,5 @@
 /.vscode
 *.col
 
+/data
 home/churchtools_connection_package/Gottesdienste/*

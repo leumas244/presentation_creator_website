@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: presentation_creator_website
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /opt/django-apps/data/presentation_creator_website:/app/data
+      - /opt/dropbox-data/Dropbox/Songs:/app/Songs
+    ports:
+      - "10102:8000"

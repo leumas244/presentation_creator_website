@@ -29,7 +29,7 @@ class Command(BaseCommand):
                         if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
                             if not 'Predigt:' in item['title']:
                                 if not ('Predigt' in item['title'] and 'Gebet' in item['title']):
-                                    if not ('Ankündigung' in item['title']):
+                                    if not ('Ankündigung' in item['title'] or 'Mitglied' in item['title']):
                                         list_of_song_items.append(item['title'])
                         elif 'musikteam' in item["responsible"]["text"].lower():
                             if not item['title'] == 'Gebet':
@@ -42,7 +42,7 @@ class Command(BaseCommand):
         
         output_dictionary['song_items'] = list_of_song_items
         try:
-            with open(output_file, 'w') as file:
+            with open(output_file, 'w', encoding='ISO-8859-1') as file:
                 json.dump(output_dictionary, file)
         except Exception as e:
             print(f'    Error by write dic in file ({output_file}) with error: "{str(e)}"')
