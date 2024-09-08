@@ -192,35 +192,32 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
 
     (function() {
-        Chart.defaults.backgroundColor = '#000';
+        /* Chart.defaults.backgroundColor = '#000'; */
         var darkMode = localStorage.getItem('darkMode');
         var darkModeToggle = document.querySelector('.theme-switcher');
-
+    
         var enableDarkMode = function enableDarkMode() {
-            document.body.classList.add('darkmode');
+            document.documentElement.classList.add('darkmode');
             localStorage.setItem('darkMode', 'enabled');
         };
-
+    
         var disableDarkMode = function disableDarkMode() {
-            document.body.classList.remove('darkmode');
-            localStorage.setItem('darkMode', null);
+            document.documentElement.classList.remove('darkmode');
+            localStorage.setItem('darkMode', 'disabled');
         };
 
-        if (darkMode === 'enabled') {
-            enableDarkMode();
-        }
-
+        
         if (darkModeToggle) {
             darkModeToggle.addEventListener('click', function() {
                 darkMode = localStorage.getItem('darkMode');
-
+    
                 if (darkMode !== 'enabled') {
                     enableDarkMode();
                 } else {
                     disableDarkMode();
                 }
-
-                addData();
+    
+                /* addData(); */
             });
         }
     })();
@@ -514,7 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
     /* Change data of all charts */
 
-
+    /* 
     function addData() {
         var darkMode = localStorage.getItem('darkMode');
 
@@ -536,4 +533,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     addData();
+    */
 });
