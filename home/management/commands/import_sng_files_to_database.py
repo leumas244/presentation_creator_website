@@ -50,10 +50,12 @@ class Command(BaseCommand):
         tracked_songs = Song.objects.all()
         admin_settings = AdminSetting.objects.get(id=1)
         songs_path_folder = admin_settings.song_folder
+        if songs_path_folder.endswith("/"):
+            songs_path_folder= songs_path_folder[:-1]
 
-        song_files_path_tree = self.get_song_files_path_tree(songs_path_folder)
+        #song_files_path_tree = self.get_song_files_path_tree(songs_path_folder)
         
-        list_of_all_song_files = self.get_list_of_all_files(song_files_path_tree, songs_path_folder)
+        list_of_all_song_files = self.get_list_of_all_files(songs_path_folder)
         amount_of_all_song_files = len(list_of_all_song_files)
 
         list_of_tracked_song_paths = self.get_list_of_tracked_song_paths(tracked_songs)
@@ -166,13 +168,18 @@ class Command(BaseCommand):
         return paths
 
 
-    def get_list_of_all_files(self, paths, folder):
+    def get_list_of_all_files(self, folder):
         all_file_paths = []
+        
         try:
-            for path in paths:
-                if not len(paths[path]) == 0 and path != 'meta':
-                    for song_name in paths[path]:
-                        all_file_paths.append((path.replace(folder, '') + '/' + song_name)[1:])
+            for root, dirs, files in os.walk(folder):
+                for file in files:
+                    if file.endswith(".sng"):
+                        # Relativer Pfad wird berechnet
+                        relative_path = os.path.relpath(os.path.join(root, file), folder)
+                        relative_path = relative_path.replace("\\", "/")
+                        
+                        all_file_paths.append(relative_path)
         except Exception as e:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             traceback_details = {
