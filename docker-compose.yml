@@ -10,3 +10,4 @@ services:
       - /opt/dropbox-data/Dropbox/Songs:/app/Songs
     ports:
       - "10102:8000"
+    user: "www-data"
