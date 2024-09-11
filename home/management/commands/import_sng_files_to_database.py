@@ -147,7 +147,7 @@ class Command(BaseCommand):
         print("Starting deleting old song files")
 
         if (
-            len(list_of_all_song_files) <= self.allowed_deleted_songs_count
+            len(list_of_tracked_song_paths) <= self.allowed_deleted_songs_count
             or self.force_delete
         ):
             bar = progressbar.ProgressBar(
@@ -183,7 +183,7 @@ class Command(BaseCommand):
                 bar.update(counter_done)
             bar.finish()
         else:
-            mail_massage = f"Hallo Samuel,\n\nBeim Importieren der Songs von Dropbox in die Datenbank sollen {len(list_of_tracked_song_paths)} gelöscht werden. Bitte prüfe, ob diese Information stimmt.\n\nViele Grüße\nAdmin"
+            mail_massage = f"Hallo Samuel,\n\nBeim Importieren der Songs von Dropbox in die Datenbank sollen {len(list_of_tracked_song_paths)} Songs gelöscht werden. Bitte prüfe, ob diese Information stimmt.\n\nViele Grüße\nAdmin"
             subject = "Problem beim ausführen eines automatischen Skripts der Präsentation-Webseite."
             send_mail(
                 admin_settings.name_error_reciever,
