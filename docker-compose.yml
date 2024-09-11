@@ -6,7 +6,7 @@ services:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - /opt/django-apps/data/presentation_creator_website:/app/data
+      - /opt/django-apps/data/presentation_creator_website/data:/app/data
       - /opt/dropbox-data/Dropbox/Songs:/app/Songs
     ports:
       - "10102:8000"
