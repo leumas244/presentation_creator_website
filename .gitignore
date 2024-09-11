@@ -8,5 +8,6 @@
 /.vscode
 *.col
 
+/Songs
 /data
 home/churchtools_connection_package/Gottesdienste/*
