@@ -3,7 +3,7 @@ from fuzzywuzzy import fuzz
 import os
 import re
 
-from .churchtoos_api_conection import get_agenda_by_event_id, get_right_time
+from .churchtoos_api_conection import get_agenda_by_event_id, get_right_time, get_song_by_song_id
 from .settings import fuzzy_border
 from .songbeamer_file_creator import add_item_countdown, add_item_header, add_item_normal, add_item_song, add_item_state, add_item_vaterunser, create_a_new_songbeamer_file
 from .powerpoint_creator import create_pp_file, set_weekvers_in_pp_by_placeholder, set_informations_in_pp_by_placeholder
@@ -79,7 +79,21 @@ def get_all_necessary_agenda_information(agenda_id):
         item_data["responsible"] = responsible
         items.append(item_data)
 
-        if "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
+        if item["type"] == "song":
+            song_id = item["song"]["songId"]
+            song = get_song_by_song_id(song_id)
+            song = song["data"]
+            songs_found = convert_song_by_song_Item(songs, song)
+            if not song["name"] in item["title"]:
+                if song["ccli"]:
+                    item_data["title"] = item_data["title"] + "  (" + song["name"] + ")  |  gesucht mit CCLI-NR: " + song["ccli"]
+                else:
+                    item_data["title"] = item_data["title"] + "  (" + song["name"] + ")"
+            else:
+                if song["ccli"]:
+                    item_data["title"] = item_data["title"] + " |  gesucht mit CCLI-NR: " + song["ccli"]
+            item_data["song"] = songs_found
+        elif "Lied" in item['title'] or "lied" in item['title'] or "Song" in item['title']:
             if not 'Predigt:' in item['title']:
                 if not ('Predigt' in item['title'] and 'Gebet' in item['title']):
                     if not ('Ankündigung' in item['title'] or 'Mitglied' in item['title']):
@@ -137,6 +151,27 @@ def song_converter_without_colon(songs, item):
     end_result = result_decider(fuzzy_matches_list, songs_founded)
 
     new_end_result = get_new_end_result(end_result)
+    return new_end_result
+
+
+def convert_song_by_song_Item(songs, song_item):
+    song_name = song_item["name"]
+    ccli_number = int(song_item["ccli"])
+    songs_found = search_song_by_ccli(songs, ccli_number)
+    if songs_found == []:
+        item = {"title": song_name}
+        songs_found = song_converter_without_colon(songs, item)
+        return songs_found
+    else:
+        return songs_found
+
+
+def search_song_by_ccli(songs, ccli_number):
+    songs_founded = []
+    for song in songs:
+        if song.CCLI == ccli_number:
+            songs_founded.append([100, song])
+    new_end_result = get_new_end_result(songs_founded)
     return new_end_result
 
 

@@ -28,6 +28,14 @@ def get_agenda_by_event_id(event_id):
     return data
 
 
+def get_song_by_song_id(song_id):
+    get_song_url = base_url + "songs/" + str(
+        song_id)
+
+    data = request_to_church_tools(get_song_url)
+    return data
+
+
 def get_event_by_event_id(event_id):
     # build the api-url
     get_event_url = base_url + "events/" + str(event_id)

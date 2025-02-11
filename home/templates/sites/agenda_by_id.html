@@ -61,7 +61,7 @@
                         {% if forloop.first %}
                           {% if song_list.1.churchSongID %}
                           <p>
-                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}" checked/>{{ song_list.0 }}% {{ song_list.1.title }}; {{ song_list.1.churchSongID }} <button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
+                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}" checked/>{{ song_list.0 }}% {{ song_list.1.title }}; {{ song_list.1.churchSongID }} {% if song_list.1.CCLI %} (CCLI: {{ song_list.1.CCLI }}){% endif %}<button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
                             <div id="m{{ song_list.1.id }}" class="modal">
                               <div class="modal-content">
                                 <span id="c{{ song_list.1.id }}" class="close">&times;</span>
@@ -75,7 +75,7 @@
                           </p>
                           {% else %}
                           <p>
-                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}" checked/>{{ song_list.0 }}% {{ song_list.1.title }} <button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
+                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}" checked/>{{ song_list.0 }}% {{ song_list.1.title }} {% if song_list.1.CCLI %} (CCLI: {{ song_list.1.CCLI }}){% endif %}<button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
                             <div id="m{{ song_list.1.id }}" class="modal">
                               <div class="modal-content">
                                 <span id="c{{ song_list.1.id }}" class="close">&times;</span>
@@ -91,7 +91,7 @@
                         {% else %}
                           {% if song_list.1.churchSongID %}
                           <p>
-                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}"/>{{ song_list.0 }}% {{ song_list.1.title }}; {{ song_list.1.churchSongID }} <button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
+                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}"/>{{ song_list.0 }}% {{ song_list.1.title }}; {{ song_list.1.churchSongID }} {% if song_list.1.CCLI %} (CCLI: {{ song_list.1.CCLI }}){% endif %}<button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
                             <div id="m{{ song_list.1.id }}" class="modal">
                               <div class="modal-content">
                                 <span id="c{{ song_list.1.id }}" class="close">&times;</span>
@@ -105,7 +105,7 @@
                           </p>
                           {% else %}
                           <p>
-                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}"/>{{ song_list.0 }}% {{ song_list.1.title }} <button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
+                            <input type="radio" name="song_number{{ forloop.parentloop.counter }}" value="{{ song_list.1.id }}"/>{{ song_list.0 }}% {{ song_list.1.title }} {% if song_list.1.CCLI %} (CCLI: {{ song_list.1.CCLI }}){% endif %}<button class="modal-btn" type="button" onclick="modal_func('m{{ song_list.1.id }}', 'c{{ song_list.1.id }}')" title="Songtext anzeigen"><i data-feather="info" aria-hidden="true" width=16 height=16></i></button>
                             <div id="m{{ song_list.1.id }}" class="modal">
                               <div class="modal-content">
                                 <span id="c{{ song_list.1.id }}" class="close">&times;</span>
