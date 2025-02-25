@@ -61,7 +61,8 @@ def send_mail_for_missing_song(missing_song_list):
     now = datetime.datetime.now()
     timezone = pytz.timezone("Europe/Berlin")
     right_time = pytz.utc.localize(now, is_dst=None).astimezone(timezone)
-    mail_massage = f"Hallo Samuel,\n\nEs gibt fehlende CCLI-Verknüpfungen von SongBeamer Dateien und ChruchTools Songs:\n{song_list_str} \nFehlendes Lied gefunden am: {right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr")}\n\nViele Grüße\nAdmin"
+    formatted_time = right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr")
+    mail_massage = f"Hallo Samuel,\n\nEs gibt fehlende CCLI-Verknüpfungen von SongBeamer Dateien und ChruchTools Songs:\n{song_list_str} \nFehlendes Lied gefunden am: {formatted_time}\n\nViele Grüße\nAdmin"
     subject = "Fehlendes SongBeamer Lied oder CCLI-Verknüpfung"
     send_mail(admin_settings.name_error_reciever, admin_settings.email_error_receiver, mail_massage, subject)
 
