@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
         self.print_info(info=f'Songs with no macht:')
         for song in churchtools_songs_with_no_ccli_match:
-            self.print_info(info=f'- {song['name']}; CCLI: {song['ccli']}; CT-SongId: {song['id']}', tab=8, date=False)
+            self.print_info(info=f'- {song["name"]}; CCLI: {song["ccli"]}; CT-SongId: {song["id"]}', tab=8, date=False)
 
         if churchtools_songs_with_no_ccli_match:
             send_mail_for_missing_song(churchtools_songs_with_no_ccli_match)
