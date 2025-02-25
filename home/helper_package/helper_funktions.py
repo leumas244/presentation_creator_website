@@ -53,6 +53,19 @@ def send_exeption_mail_by_automatic_script(traceback_details):
     send_mail(admin_settings.name_error_reciever, admin_settings.email_error_receiver, mail_massage, subject)
 
 
+def send_mail_for_missing_song(missing_song_list):
+    song_list_str = ""
+    for song in missing_song_list:
+        song_list_str = song_list_str + f"         - {song['name']}; CCLI: {song['ccli']}; CT-SongId: {song['id']}\n"
+    admin_settings = AdminSetting.objects.get(id=1)
+    now = datetime.datetime.now()
+    timezone = pytz.timezone("Europe/Berlin")
+    right_time = pytz.utc.localize(now, is_dst=None).astimezone(timezone)
+    mail_massage = f"Hallo Samuel,\n\nEs gibt fehlende CCLI-Verknüpfungen von SongBeamer Dateien und ChruchTools Songs:\n{song_list_str} \nFehlendes Lied gefunden am: {right_time.strftime("%d.%m.%Y, %H:%M:%S Uhr")}\n\nViele Grüße\nAdmin"
+    subject = "Fehlendes SongBeamer Lied oder CCLI-Verknüpfung"
+    send_mail(admin_settings.name_error_reciever, admin_settings.email_error_receiver, mail_massage, subject)
+
+
 def send_invation_mail(username, first_name, last_name, email, token_link):
     full_name = f'{first_name} {last_name}'
     subject = f'Einladung zur Stadtmission Grünstadt Präsentations-Webseite'
